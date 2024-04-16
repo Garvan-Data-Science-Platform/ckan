@@ -5,6 +5,7 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
+
 :root {
   --bs-blue: #206b82;
   --bs-indigo: #6610f2;
@@ -48,15 +49,18 @@
   --bs-black-rgb: 0, 0, 0;
   --bs-body-color-rgb: 51, 51, 51;
   --bs-body-bg-rgb: 255, 255, 255;
-  --bs-font-sans-serif: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --bs-font-monospace: SFMono-Regular, Menlo, fMonaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --bs-font-sans-serif: "Roboto";
+  --bs-font-monospace: "Roboto";
   --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
   --bs-body-font-family: var(--bs-font-sans-serif);
   --bs-body-font-size: 0.875rem;
-  --bs-body-font-weight: 400;
+  --bs-body-font-weight: 300;
   --bs-body-line-height: 1.5;
   --bs-body-color: #333333;
   --bs-body-bg: #fff;
+  --garvan-purple:#4D00C7;
+  --garvan-neutral:#F5F3F1;
+  --garvan-grey:#C6C7C5;
 }
 
 *,
@@ -73,7 +77,7 @@
 
 body {
   margin: 0;
-  font-family: var(--bs-body-font-family);
+  font-family: Roboto;
   font-size: var(--bs-body-font-size);
   font-weight: var(--bs-body-font-weight);
   line-height: var(--bs-body-line-height);
@@ -105,6 +109,7 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
 
 h1, .h1 {
   font-size: calc(1.3rem + 0.6vw);
+  font-family: Roboto Slab;
 }
 @media (min-width: 1200px) {
   h1, .h1 {
@@ -2938,24 +2943,24 @@ textarea.form-control-lg {
 
 .btn-primary {
   color: #fff;
-  background-color: #206b82;
+  background-color: var(--garvan-purple);
   border-color: #206b82;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 .btn-primary:hover {
   color: #fff;
-  background-color: #1b5b6f;
+  background-color: var(--garvan-grey);
   border-color: #1a5668;
 }
 .btn-check:focus + .btn-primary, .btn-primary:focus {
   color: #fff;
-  background-color: #1b5b6f;
+  background-color: var(--garvan-grey);
   border-color: #1a5668;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 0.25rem rgba(65, 129, 149, 0.5);
 }
 .btn-check:checked + .btn-primary, .btn-check:active + .btn-primary, .btn-primary:active, .btn-primary.active, .show > .btn-primary.dropdown-toggle {
   color: #fff;
-  background-color: #1a5668;
+  background-color: var(--garvan-grey);
   border-color: #185062;
 }
 .btn-check:checked + .btn-primary:focus, .btn-check:active + .btn-primary:focus, .btn-primary:active:focus, .btn-primary.active:focus, .show > .btn-primary.dropdown-toggle:focus {
@@ -13233,18 +13238,11 @@ td.diff_header {
 
 @media (min-width: 576px) {
   .hero {
-    background: url("../../../base/images/background-tile.png");
+      background-color:var(--garvan-neutral);
   }
 }
 .hero:after {
   background-color: rgba(0, 0, 0, 0.09);
-  background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0));
-  background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0));
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(0, 0, 0, 0.15)), to(rgba(0, 0, 0, 0)));
-  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0));
-  background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0));
-  background-image: linear-gradient(top, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0));
-  background-repeat: repeat-x;
   background-color: #f6f6f6;
   border-bottom: 1px solid #d0d0d0;
   border-radius: 3px 3px 0 0;
@@ -13359,7 +13357,6 @@ td.diff_header {
 }
 
 .homepage .hero {
-  background: url("../../../base/images/background-tile.png");
   padding: 20px 0;
 }
 .homepage .module-promotion {
@@ -13367,13 +13364,13 @@ td.diff_header {
   padding: 30px;
 }
 .homepage .module-search {
-  color: #fff;
+  color: black;
   padding: 10px;
   border: 1px solid #ccc;
 }
 .homepage .module-search .search-form {
   border-radius: 0.25rem;
-  background-color: #005d7a;
+  background-color: var(--garvan-grey);
   padding: 30px 20px;
 }
 .homepage .module-search .search-form input {
@@ -13394,7 +13391,7 @@ td.diff_header {
 .homepage .module-search .tags {
   margin-top: -5px;
   padding: 5px 10px 10px 10px;
-  background-color: #003647;
+  background-color: var(--garvan-neutral);
 }
 .homepage .module-search .tags h3, .homepage .module-search .tags .h3 {
   font-size: 0.875rem;
@@ -13443,7 +13440,7 @@ td.diff_header {
 }
 .homepage .module-feeds {
   padding: 2rem 0;
-  background: #eee url("../../../base/images/bg.png");
+  background-color:var(--garvan-neutral);
 }
 .homepage .module-feeds .module-stats {
   margin-top: 0;
@@ -13465,7 +13462,7 @@ td.diff_header {
 .account-masthead {
   min-height: 30px;
   color: #fff;
-  background: #003647 url("../../../base/images/bg.png");
+  background-color:black;
 }
 .account-masthead .account {
   float: right;
@@ -13530,8 +13527,9 @@ td.diff_header {
 }
 
 .masthead {
-  background: #005d7a url("../../../base/images/bg.png");
+  background-color:#4D00C7;
 }
+
 .masthead .debug {
   position: fixed;
   top: 0;
@@ -13584,7 +13582,7 @@ td.diff_header {
 }
 .masthead .main-navbar ul li:hover a, .masthead .main-navbar ul li:focus a, .masthead .main-navbar ul li.active a {
   border-radius: 0.3rem;
-  background-color: #003647;
+  background-color: rgba(0,0,0,0.3);
 }
 .masthead .main-navbar .site-search button {
   display: flex;
@@ -13625,16 +13623,17 @@ td.diff_header {
   }
 }
 .site-footer {
-  background: #005d7a url("../../../base/images/bg.png");
+  background: var(--garvan-grey);
   padding: 20px 0;
 }
 .site-footer label,
 .site-footer small,
 .site-footer .small {
-  color: #CCDEE3;
+
+  color: black;
 }
 .site-footer a {
-  color: #CCDEE3;
+  color: black;
 }
 .site-footer .footer-links ul {
   margin: 0;
@@ -13643,7 +13642,7 @@ td.diff_header {
   margin-bottom: 5px;
 }
 .site-footer .attribution p {
-  color: #CCDEE3;
+  color: black;
   font-size: 0.875rem;
 }
 .site-footer .attribution .ckan-footer-logo {
