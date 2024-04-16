@@ -5,23 +5,15 @@
     {% if intro %}
       {{ h.render_markdown(intro) }}
     {% else %}
-      <h1 class="page-heading">{{ _("Welcome to CKAN") }}</h1>
+      <h1 class="page-heading">{{ _("Welcome to Garvan Data Hub") }}</h1>
       <p>
-        {% trans %}This is a nice introductory paragraph about CKAN or the site
-        in general. We don't have any copy to go here yet but soon we will
+        {% trans %}
+        This is an open data website for finding, accessing and sharing metadata for Garvan research.
         {% endtrans %}
       </p>
     {% endif %}
   </div>
 
   {% block home_image %}
-    <section class="featured media-overlay hidden-xs">
-      <h2 class="media-heading">{% block home_image_caption %}{{ _("This is a featured section") }}{% endblock %}</h2>
-      {% block home_image_content %}
-        <a class="media-image" href="#">
-          <img class="img-fluid" src="{{ h.url_for_static('/base/images/placeholder-420x220.png') }}" alt="Placeholder" />
-        </a>
-      {% endblock %}
-    </section>
   {% endblock %}
 </div>
