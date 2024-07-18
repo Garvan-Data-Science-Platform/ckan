@@ -1,0 +1,2 @@
+ckanext-saml2auth
+git+https://github.com/davidread/ckanext-hierarchy.git#egg=ckanext-hierarchy

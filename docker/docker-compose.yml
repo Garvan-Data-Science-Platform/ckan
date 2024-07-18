@@ -1,0 +1,35 @@
+services:
+  postgres:
+    image: postgres:16.3
+    environment:
+      - POSTGRES_USER=ckan_default
+      - POSTGRES_PASSWORD=devpassword
+      - POSTGRES_DB=ckan_default
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+      - ./db-init.sh:/docker-entrypoint-initdb.d/db-init.sh
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "ckan_default", "-d", "ckan_default"]
+
+  solr:
+    image: ckan/ckan-solr:2.10-solr9
+    volumes:
+      - ./data/solr_data:/var/solr
+    healthcheck:
+      test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:8983/solr/"]
+
+  app:
+    depends_on:
+      - postgres
+      - solr
+      - redis
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    env_file:
+      - dev.env
+    ports:
+      - 8000:8000
+
+  redis:
+    image: redis:7
