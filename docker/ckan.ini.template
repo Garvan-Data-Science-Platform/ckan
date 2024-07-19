@@ -164,17 +164,17 @@ ckan.cors.origin_allow_all = false
 ckan.cors.origin_whitelist = 
 
 ## Plugins Settings ############################################################
-ckan.plugins = activity saml2auth datastore datapusher datatables_view hierarchy_display hierarchy_form
+ckan.plugins = activity saml2auth datastore datatables_view hierarchy_display hierarchy_form xloader
 ckan.resource_proxy.timeout = 5
 
 ## Datastore
 ckan.datastore.write_url = postgresql://ckan_default:{{DB_PASS}}@{{DB_HOST}}/datastore_default
 ckan.datastore.read_url = postgresql://datastore_default:{{DB_PASS}}@{{DB_HOST}}/datastore_default
 
-## Datapusher
-ckan.datapusher.url = http://127.0.0.1:8800/
-ckan.datapusher.formats = csv xls xlsx tsv application/csv application/vnd.ms-excel application/vnd.openxmlformats-officedocument.spreadsheetml.sheet ods application/vnd.oasis.opendocument.spreadsheet
-ckan.datapusher.api_token = {{DATAPUSHER_TOKEN}}
+## Xloader
+ckanext.xloader.formats = csv xls xlsx tsv application/csv application/vnd.ms-excel application/vnd.openxmlformats-officedocument.spreadsheetml.sheet ods application/vnd.oasis.opendocument.spreadsheet
+ckanext.xloader.api_token = {{XLOADER_TOKEN}}
+ckanext.xloader.jobs_db.uri = postgresql://ckan_default:{{DB_PASS}}@{{DB_HOST}}/ckan_default
 
 ## Saml2auth
 ckanext.saml2auth.idp_metadata.location = remote
@@ -268,7 +268,7 @@ ckan.i18n.rtl_languages = he ar fa_IR
 ckan.i18n.rtl_theme = css/main-rtl
 ckan.display_timezone = UTC
 ckan.root_path = 
-ckan.resource_formats = /home/tkallady/ckan/ckan/config/resource_formats.json
+ckan.resource_formats = /app/ckan/config/resource_formats.json
 
 ## Form Settings ###############################################################
 ckan.dataset.create_on_ui_requires_resources = true

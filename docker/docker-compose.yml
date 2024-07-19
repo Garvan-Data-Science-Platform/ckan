@@ -18,7 +18,7 @@ services:
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:8983/solr/"]
 
-  app:
+  ckan:
     depends_on:
       - postgres
       - solr
@@ -28,8 +28,21 @@ services:
       dockerfile: docker/Dockerfile
     env_file:
       - dev.env
+    volumes:
+      - ./data/ckan:/var/lib/ckan/default
     ports:
       - 8000:8000
+    command: ./docker/entrypoint.sh
+
+  xloader:
+    depends_on:
+      - ckan
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    env_file:
+      - dev.env
+    command: ./docker/entrypoint-worker.sh
 
   redis:
     image: redis:7

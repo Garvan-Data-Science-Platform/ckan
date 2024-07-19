@@ -4,10 +4,14 @@ WORKDIR /app
 
 RUN apt-get update && apt-get install -y xmlsec1
 
+COPY requirements.txt .
+COPY plugins.txt .
+
+RUN pip install -r https://raw.githubusercontent.com/ckan/ckanext-xloader/master/requirements.txt && pip install -U requests[security] \
+    && pip install gunicorn && pip install -r requirements.txt && pip install -r plugins.txt
+
 COPY . .
 
-RUN pip install -e . && pip install gunicorn && pip install -r requirements.txt && pip install -r plugins.txt
+RUN pip install -e .
 
-CMD ./docker/parse-config.sh docker/ckan.ini.template > /app/ckan.ini && \
-    ckan -c /app/ckan.ini db init && \ 
-    gunicorn --bind 0.0.0.0:8000 wsgi:application
+CMD echo "Must define a command"
