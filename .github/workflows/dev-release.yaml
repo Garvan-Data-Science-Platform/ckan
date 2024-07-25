@@ -4,8 +4,10 @@ on:
     workflows: [Cypress]
     types:
       - completed
+    branches: [garvan]
 
 permissions:
+  contents: "read"
   id-token: write
 
 jobs:
@@ -17,6 +19,10 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.workflow_run.head_branch }}
+
+      - name: Set SHA_SHORT
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: authenticate to google cloud
         id: "auth"
@@ -31,5 +37,26 @@ jobs:
       - name: "Docker auth"
         run: gcloud auth configure-docker australia-southeast1-docker.pkg.dev
 
+      - uses: google-github-actions/get-gke-credentials@db150f2cc60d1716e61922b832eae71d2a45938f
+        with:
+          cluster_name: garvan-data-hub-dev-gke
+          location: australia-southeast1-a
+          project_id: garvan-data-hub-dev
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          file: docker/Dockerfile
+          push: true
+          tags: |
+            australia-southeast1-docker.pkg.dev/dsp-registry-410602/docker/ckan:latest
+            australia-southeast1-docker.pkg.dev/dsp-registry-410602/docker/ckan:${{steps.vars.outputs.sha_short}}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Deploy backend
+        run: |-
+          kubectl set image deployment/ckan-dev ckan-dev="australia-southeast1-docker.pkg.dev/dsp-registry-410602/docker/ckan:${{steps.vars.outputs.sha_short}}"
