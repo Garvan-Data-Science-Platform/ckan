@@ -4,6 +4,7 @@ on:
     workflows: ["Cypress"]
     types:
       - completed
+    branches: [datahub-71-cicd]
 
 permissions:
   id-token: write
