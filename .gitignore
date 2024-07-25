@@ -52,3 +52,7 @@ cypress.env.json
 
 # cypress
 cypress/videos
+ckan_sample.py
+
+docker/data
+dev.env
