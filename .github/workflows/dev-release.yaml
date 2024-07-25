@@ -22,7 +22,7 @@ jobs:
         id: "auth"
         uses: "google-github-actions/auth@v2"
         with:
-          workload_identity_provider: "projects/garvan-data-hub-dev/locations/global/workloadIdentityPools/ckan-gh-identity-pool/providers/ckan-gh-provider"
+          workload_identity_provider: "projects/1008866204922/locations/global/workloadIdentityPools/ckan-gh-identity-pool/providers/ckan-gh-provider"
           service_account: datahub-sa@garvan-data-hub-dev.iam.gserviceaccount.com
 
       - name: "setup gcloud sdk"
