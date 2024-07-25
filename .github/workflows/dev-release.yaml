@@ -1,7 +1,7 @@
-name: seqr dev release
+name: dev release
 on:
   workflow_run:
-    workflows: ["Unit Tests"]
+    workflows: ["Cypress"]
     types:
       - completed
 
@@ -20,9 +20,10 @@ jobs:
 
       - name: authenticate to google cloud
         id: "auth"
-        uses: google-github-actions/auth@v1
+        uses: "google-github-actions/auth@v2"
         with:
-          credentials_json: "${{secrets.GCP_KEY}} | base64 -d"
+          workload_identity_provider: "projects/garvan-data-hub-dev/locations/global/workloadIdentityPools/ckan-gh-identity-pool/providers/ckan-gh-provider"
+          service_account: datahub-sa@garvan-data-hub-dev.iam.gserviceaccount.com
 
       - name: "setup gcloud sdk"
         uses: google-github-actions/setup-gcloud@v0
@@ -32,14 +33,3 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-
-      - name: Build and push Docker image - api
-        uses: docker/build-push-action@v3
-        with:
-          file: deploy/docker/seqr/Dockerfile
-          push: true
-          tags: |
-            australia-southeast1-docker.pkg.dev/dsp-registry-410602/docker/seqr:latest
-            australia-southeast1-docker.pkg.dev/dsp-registry-410602/docker/seqr:${{github.event.workflow_run.head_sha}}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
