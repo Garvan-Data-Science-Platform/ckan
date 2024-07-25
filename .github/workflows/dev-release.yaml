@@ -1,10 +1,9 @@
 name: dev release
 on:
   workflow_run:
-    workflows: ["Cypress"]
+    workflows: [Cypress]
     types:
       - completed
-    branches: [datahub-71-cicd]
 
 permissions:
   id-token: write
