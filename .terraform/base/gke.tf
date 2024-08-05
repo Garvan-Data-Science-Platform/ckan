@@ -36,7 +36,7 @@ resource "google_container_node_pool" "primary_nodes" {
     service_account = var.sa_email
 
     # preemptible  = true
-    machine_type = "e2-standard-2"
+    machine_type = var.machine_type
     disk_size_gb = 20
     tags         = ["gke-node", "${var.project_id}-gke"]
     metadata = {

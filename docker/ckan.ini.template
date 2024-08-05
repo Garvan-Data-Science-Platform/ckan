@@ -277,11 +277,11 @@ package_edit_return_url =
 licenses_group_url = 
 
 ## Email settings ##############################################################
-smtp.server = localhost
+smtp.server = smtp.sendgrid.net
 smtp.starttls = false
-smtp.user = 
-smtp.password = 
-smtp.mail_from = 
+smtp.user = apikey
+smtp.password = {{SENDGRID_API_KEY}}
+smtp.mail_from = datahub@dsp.garvan.org.au
 smtp.reply_to = 
 email_to = 
 error_email_from = 

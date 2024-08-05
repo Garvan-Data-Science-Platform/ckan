@@ -3,6 +3,8 @@ resource "kubernetes_deployment" "ckan" {
     name = "ckan-${var.env}"
   }
 
+  depends_on = [helm_release.postgres]
+
   spec {
     replicas = 1
     selector {
@@ -80,6 +82,10 @@ resource "kubernetes_deployment" "ckan" {
             value = data.google_secret_manager_secret_version.idp_url.secret_data
           }
           env {
+            name = "SENDGRID_API_KEY"
+            value = data.google_secret_manager_secret_version.sendgrid_api_key.secret_data
+          }
+          env {
             name = "SAML_ENTITY"
             value = "${var.subdomain}.dsp.garvan.org.au"
           }
@@ -138,6 +144,11 @@ resource "kubernetes_persistent_volume_claim" "ckan" {
 
 data "google_secret_manager_secret_version" "idp_url" {
   secret = "idp_url"
+}
+
+
+data "google_secret_manager_secret_version" "sendgrid_api_key" {
+  secret = "sendgrid-api-key"
 }
 
 resource "google_secret_manager_secret" "sess_key" {

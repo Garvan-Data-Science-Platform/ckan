@@ -45,6 +45,10 @@ variable "nodes" {
   default = 1
 }
 
+variable "machine_type" {
+  default = "e2-standard-2"
+}
+
 variable "subdomain" {
   description = "****.dsp.garvan.org.au"
 }

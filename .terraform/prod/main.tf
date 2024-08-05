@@ -12,7 +12,7 @@ terraform {
     }
   }
   backend "gcs" {
-    bucket = "terraform-state-seqr"
+    bucket = "terraform-state-ckan"
     prefix = "prod"
   }
 }
@@ -20,16 +20,14 @@ terraform {
 module "base" {
     source = "../base"
 
-    project_id = "dsp-seqr"
+    project_id = "garvan-data-hub"
     region     = "australia-southeast1"
     location = "australia-southeast1-a"
-    sa_email = "seqr-prod-sa@dsp-seqr.iam.gserviceaccount.com"
+    sa_email = "datahub-sa@garvan-data-hub.iam.gserviceaccount.com"
     env = "prod"
-    subdomain = "seqr"
-    es_master_nodes = 3
-    es_data_nodes = 2
-    es_data_machine = "e2-highmem-4"
-    #es_data_machine = "e2-highcpu-32"
+    subdomain = "ckan"
+    nodes = 2
+    machine_type = "n2-standard-2"
 }
 
 output "kubernetes_cluster_name" {
@@ -53,4 +51,12 @@ provider "kubernetes" {
   host = module.base.kubernetes_cluster_host
   token                  = data.google_client_config.default.access_token
   cluster_ca_certificate = module.base.cluster_ca
+}
+
+provider "helm" {
+  kubernetes {
+    host = module.base.kubernetes_cluster_host
+    token                  = data.google_client_config.default.access_token
+    cluster_ca_certificate = module.base.cluster_ca
+  }
 }

@@ -2,6 +2,7 @@ resource "kubernetes_deployment" "backup" {
   metadata {
     name = "backup-${var.env}"
   }
+  depends_on = [helm_release.postgres]
   spec {
     replicas = 1
     selector {
@@ -37,7 +38,7 @@ resource "kubernetes_deployment" "backup" {
           }
           env {
             name = "BUCKET"
-            value = "gs://seqr-${var.env}-backup"
+            value = "gs://ckan-${var.env}-backup"
           }
           env {
             name = "CRON"

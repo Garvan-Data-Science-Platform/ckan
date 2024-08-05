@@ -3,6 +3,8 @@ resource "kubernetes_deployment" "worker" {
     name = "worker-${var.env}"
   }
 
+  depends_on = [helm_release.postgres]
+
   spec {
     replicas = 1
     selector {
