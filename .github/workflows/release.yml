@@ -12,8 +12,7 @@ permissions:
 
 jobs:
   build_test_deploy:
-    runs-on:
-      group: "Cabana-CICD"
+    runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v3

@@ -23,7 +23,7 @@ module "gh_oidc" {
   provider_id       = "ckan-gh-provider"
   sa_mapping = {
     "github-access" = {
-      sa_name   = "projects/garvan-data-hub/serviceAccounts/${var.sa_email}"
+      sa_name   = "projects/${var.project_id}/serviceAccounts/${var.sa_email}"
       attribute = "attribute.repository/Garvan-Data-Science-Platform/ckan"
     }
   }
