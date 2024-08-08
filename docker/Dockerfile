@@ -10,6 +10,8 @@ COPY plugins.txt .
 RUN pip install -r https://raw.githubusercontent.com/ckan/ckanext-xloader/master/requirements.txt && pip install -U requests[security] \
     && pip install gunicorn && pip install -r requirements.txt && pip install -r plugins.txt
 
+RUN pip install -e 'git+https://github.com/ckan/ckanext-pages.git#egg=ckanext-pages'
+
 COPY . .
 
 RUN pip install -e .
