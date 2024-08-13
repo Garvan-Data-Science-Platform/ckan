@@ -30,6 +30,7 @@ services:
       - dev.env
     volumes:
       - ./data/ckan:/var/lib/ckan/default
+      - ../ckan:/app/ckan
     ports:
       - 8000:8000
     command: ./docker/entrypoint.sh

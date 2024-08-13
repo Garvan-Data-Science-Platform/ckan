@@ -13,9 +13,9 @@ this.ckan.module('resource-upload-field', function (jQuery) {
       }
 
       // revert to URL for Link option
-      $('#resource-link-button').on('click', function() {
-        urlField.attr('type', 'url');
-      }) 
+      //$('#resource-link-button').on('click', function() {
+      //  urlField.attr('type', 'url');
+      //}) 
 
       $('#field-resource-upload').on('change', function() {
         if (_nameIsDirty) {

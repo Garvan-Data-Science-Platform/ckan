@@ -164,7 +164,7 @@ ckan.cors.origin_allow_all = false
 ckan.cors.origin_whitelist = 
 
 ## Plugins Settings ############################################################
-ckan.plugins = activity saml2auth datastore datatables_view hierarchy_display hierarchy_form xloader
+ckan.plugins = activity saml2auth datastore datatables_view hierarchy_display hierarchy_form xloader pages
 ckan.resource_proxy.timeout = 5
 
 ## Datastore

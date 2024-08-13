@@ -1,11 +1,11 @@
 {% extends "package/resource_edit_base.html" %}
 
-{% block subtitle %}{{ _('Add resource') }} {{ g.template_title_delimiter }} {{ h.dataset_display_name(pkg) }}{% endblock %}
-{% block form_title %}{{ _('Add resource') }}{% endblock %}
+{% block subtitle %}{{ _('Add file or directory') }} {{ g.template_title_delimiter }} {{ h.dataset_display_name(pkg) }}{% endblock %}
+{% block form_title %}{{ _('Add file or directory') }}{% endblock %}
 
 {% block breadcrumb_content %}
   {{ super() }}
-  <li class="active"><a href="#">{{ _('Add New Resource') }}</a></li>
+  <li class="active"><a href="#">{{ _('Add New File or Directory') }}</a></li>
 {% endblock %}
 
 {% block form %}
@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block content_primary_nav %}
-  <li class="active"><a href="#"><i class="fa fa-pencil-square"></i> {{ _('New resource') }}</a></li>
+  <li class="active"><a href="#"><i class="fa fa-pencil-square"></i> {{ _('New file or directory') }}</a></li>
 {% endblock %}
 
 {% block secondary_content %}
