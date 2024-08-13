@@ -136,9 +136,9 @@ def resource_dictize(res: model.Resource, context: Context) -> dict[str, Any]:
                                     resource_id=res.id,
                                     filename=cleaned_name,
                                     qualified=True)
-    elif resource['url'] and not urlsplit(url).scheme \
-         and not context.get('for_edit'):
-        resource['url'] = u'http://' + url.lstrip('/')
+    #elif resource['url'] and not urlsplit(url).scheme \
+    #     and not context.get('for_edit'):
+    #    resource['url'] = u'http://' + url.lstrip('/')
     return resource
 
 
