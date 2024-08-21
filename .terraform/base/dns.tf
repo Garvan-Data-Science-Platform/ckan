@@ -7,24 +7,14 @@ resource "google_dns_record_set" "ckan" {
   managed_zone = "dsp"
   project = "ctrl-358804"
 
-  rrdatas = [coalesce(data.google_compute_global_address.ckan-static.address,"1.1.1.1")]
+  rrdatas = ["34.151.105.103"]
 }
 
-resource "google_compute_global_address" "ckan-static" {
-  name = "ipv4-address-api-${var.env}"
-}
-
-data "google_compute_global_address" "ckan-static" {
-  depends_on = [google_compute_global_address.ckan-static]
-  name = "ipv4-address-api-${var.env}"
-}
 
 resource "kubernetes_service" "primary" {
   
   metadata {
-    annotations = {
-      "cloud.google.com/neg": "{\"ingress\": true}",
-    }
+
     name = "primary"
     labels = {
         App = "ckan-${var.env}"
@@ -44,22 +34,28 @@ resource "kubernetes_service" "primary" {
 }
 
 resource "kubernetes_ingress_v1" "gke-ingress" {
-  wait_for_load_balancer = true
   metadata {
     name = "gke-ingress"
     annotations = {
-        "kubernetes.io/ingress.global-static-ip-name"=google_compute_global_address.ckan-static.name
-        "kubernetes.io/ingress.class"="gce"
         "ingress.gcp.kubernetes.io/pre-shared-cert"=google_compute_managed_ssl_certificate.lb_default.name
     }
   }
 
   spec {
-    default_backend {
-      service {
-        name = "primary"
-        port {
-          number = 80
+    rule {
+      host = "${var.subdomain}.dsp.garvan.org.au"
+      http {
+        path {
+          path = "/"
+          path_type = "Prefix"
+          backend {
+            service {
+              name = "primary"
+              port {
+                number = 80
+              }
+            }
+          }
         }
       }
     }

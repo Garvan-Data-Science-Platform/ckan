@@ -1,1 +1,3 @@
 .terraform
+k3s-config.yml
+*.json

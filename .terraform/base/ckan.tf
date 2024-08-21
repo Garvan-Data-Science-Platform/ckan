@@ -12,6 +12,7 @@ resource "kubernetes_deployment" "ckan" {
         App = "ckan-${var.env}"
       }
     }
+
     template {
       metadata {
         labels = {
@@ -20,11 +21,19 @@ resource "kubernetes_deployment" "ckan" {
       }
       spec {
 
+      node_selector = {
+          "kubernetes.io/hostname": "k3s-test"
+      }
+
         volume {
             name = "ckan-volume-mount"
             persistent_volume_claim {
                 claim_name = "ckan-claim"
             }
+        }
+
+        image_pull_secrets {
+          name="regcred"
         }
 
         container {
@@ -96,34 +105,6 @@ resource "kubernetes_deployment" "ckan" {
   }
 }
 
-resource "google_compute_disk" "ckan" {
-  name  = "garvan-ckan"
-  type  = "pd-ssd"
-  zone  = var.location
-  #image = "debian-11-bullseye-v20220719"
-  size = 20 #Gb
-  labels = {
-    environment = "dev"
-  }
-  physical_block_size_bytes = 4096
-}
-
-resource "kubernetes_persistent_volume" "ckan" {
-  metadata {
-    name = "ckan-pv"
-  }
-  spec {
-    capacity = {
-      storage = "20Gi"
-    }
-    access_modes = ["ReadWriteOnce"]
-    persistent_volume_source {
-      gce_persistent_disk {
-        pd_name = google_compute_disk.ckan.name
-      }
-    }
-  }
-}
 
 resource "kubernetes_persistent_volume_claim" "ckan" {
   metadata {
@@ -134,9 +115,10 @@ resource "kubernetes_persistent_volume_claim" "ckan" {
   }
   spec {
     access_modes = ["ReadWriteOnce"]
+    storage_class_name = "local-path"
     resources {
       requests = {
-        storage = "20Gi"
+        storage = "1Gi"
       }
     }
   }
@@ -152,7 +134,7 @@ data "google_secret_manager_secret_version" "sendgrid_api_key" {
 }
 
 resource "google_secret_manager_secret" "sess_key" {
-  secret_id = "sess-key-${var.env}"
+  secret_id = "sess-key-${var.env}-k3s"
 
   replication {
     user_managed {
@@ -163,7 +145,7 @@ resource "google_secret_manager_secret" "sess_key" {
   }
 
   provisioner "local-exec" { #This creates a randomly generated password
-    command = "head /dev/urandom | LC_ALL=C tr -dc A-Za-z0-9 | head -c10 | gcloud secrets versions add sess-key-${var.env} --project=${var.project_id} --data-file=-"
+    command = "head /dev/urandom | LC_ALL=C tr -dc A-Za-z0-9 | head -c10 | gcloud secrets versions add sess-key-${var.env}-k3s --project=${var.project_id} --data-file=-"
   }
 }
 
@@ -176,7 +158,7 @@ data "google_secret_manager_secret_version" "xloader_token" {
 }
 
 resource "google_secret_manager_secret" "secret_key" {
-  secret_id = "secret-key-${var.env}"
+  secret_id = "secret-key-${var.env}-k3s"
 
   replication {
     user_managed {
@@ -187,7 +169,7 @@ resource "google_secret_manager_secret" "secret_key" {
   }
 
   provisioner "local-exec" { #This creates a randomly generated password
-    command = "head /dev/urandom | LC_ALL=C tr -dc A-Za-z0-9 | head -c10 | gcloud secrets versions add secret-key-${var.env} --project=${var.project_id} --data-file=-"
+    command = "head /dev/urandom | LC_ALL=C tr -dc A-Za-z0-9 | head -c10 | gcloud secrets versions add secret-key-${var.env}-k3s --project=${var.project_id} --data-file=-"
   }
 }
 
@@ -199,9 +181,7 @@ data "google_secret_manager_secret_version" "secret_key" {
 resource "kubernetes_service" "ckan" {
   
   metadata {
-    annotations = {
-      "cloud.google.com/neg": "{\"ingress\": true}",
-    }
+
     name = "ckan-${var.env}"
     labels = {
         App = "ckan-${var.env}"

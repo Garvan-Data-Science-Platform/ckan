@@ -18,7 +18,12 @@ resource "kubernetes_deployment" "worker" {
           App = "worker-${var.env}"
         }
       }
+      
       spec {
+
+        image_pull_secrets {
+          name="regcred"
+        }
 
         container {
           image = "australia-southeast1-docker.pkg.dev/dsp-registry-410602/docker/ckan:latest"

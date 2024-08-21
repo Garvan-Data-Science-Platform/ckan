@@ -13,7 +13,7 @@ terraform {
   }
   backend "gcs" {
     bucket = "terraform-state-ckan"
-    prefix = "dev"
+    prefix = "dev-k3s"
   }
 }
 
@@ -25,13 +25,8 @@ module "base" {
     location = "australia-southeast1-a"
     sa_email = "datahub-sa@garvan-data-hub-dev.iam.gserviceaccount.com"
     env = "dev"
-    subdomain = "ckan-dev"
+    subdomain = "ckan-dev-k3s"
     nodes = 1
-}
-
-output "kubernetes_cluster_name" {
-  value       = module.base.kubernetes_cluster_name
-  description = "GKE Cluster Name"
 }
 
 provider "google" {

@@ -18,6 +18,10 @@ resource "kubernetes_deployment" "solr" {
       }
       spec {
 
+        node_selector = {
+          "kubernetes.io/hostname": "k3s-test"
+        }
+
         init_container {
           name="volume-permissions"
           image="busybox"
@@ -54,34 +58,7 @@ resource "kubernetes_deployment" "solr" {
   }
 }
 
-resource "google_compute_disk" "solr" {
-  name  = "garvan-solr"
-  type  = "pd-ssd"
-  zone  = var.location
-  #image = "debian-11-bullseye-v20220719"
-  size = 20 #Gb
-  labels = {
-    environment = "dev"
-  }
-  physical_block_size_bytes = 4096
-}
 
-resource "kubernetes_persistent_volume" "solr" {
-  metadata {
-    name = "solr-pv"
-  }
-  spec {
-    capacity = {
-      storage = "20Gi"
-    }
-    access_modes = ["ReadWriteOnce"]
-    persistent_volume_source {
-      gce_persistent_disk {
-        pd_name = google_compute_disk.solr.name
-      }
-    }
-  }
-}
 
 resource "kubernetes_persistent_volume_claim" "solr" {
   metadata {
@@ -94,9 +71,10 @@ resource "kubernetes_persistent_volume_claim" "solr" {
     access_modes = ["ReadWriteOnce"]
     resources {
       requests = {
-        storage = "20Gi"
+        storage = "1Gi"
       }
     }
+    storage_class_name = "local-path"
   }
 }
 
@@ -104,9 +82,7 @@ resource "kubernetes_persistent_volume_claim" "solr" {
 resource "kubernetes_service" "solr" {
   
   metadata {
-    annotations = {
-      "cloud.google.com/neg": "{\"ingress\": true}",
-    }
+
     name = "solr-${var.env}"
     labels = {
         App = "solr-${var.env}"
