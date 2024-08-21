@@ -22,7 +22,7 @@ resource "kubernetes_deployment" "ckan" {
       spec {
 
       node_selector = {
-          "kubernetes.io/hostname": "k3s-test"
+          "kubernetes.io/hostname": "k3s"
       }
 
         volume {
@@ -37,7 +37,7 @@ resource "kubernetes_deployment" "ckan" {
         }
 
         container {
-          image = "australia-southeast1-docker.pkg.dev/dsp-registry-410602/docker/ckan:latest"
+          image = "australia-southeast1-docker.pkg.dev/dsp-registry-410602/docker/ckan:mac"
           name  = "ckan"
           port {
             container_port = 8000

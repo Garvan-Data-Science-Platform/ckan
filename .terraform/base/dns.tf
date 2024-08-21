@@ -42,6 +42,7 @@ resource "kubernetes_ingress_v1" "gke-ingress" {
   }
 
   spec {
+    ingress_class_name = "nginx"
     rule {
       host = "${var.subdomain}.dsp.garvan.org.au"
       http {

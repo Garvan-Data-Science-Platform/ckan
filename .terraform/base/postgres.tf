@@ -7,7 +7,7 @@ resource "helm_release" "postgres" {
 
   set {
     name = "primary.nodeSelector"
-    value = yamlencode({"kubernetes.io/hostname": "k3s-test"})
+    value = yamlencode({"kubernetes.io/hostname": "k3s"})
   }
   set {
     name = "auth.password"
