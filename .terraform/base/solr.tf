@@ -19,7 +19,7 @@ resource "kubernetes_deployment" "solr" {
       spec {
 
         node_selector = {
-          "kubernetes.io/hostname": "k3s-test"
+          "kubernetes.io/hostname": "k3s"
         }
 
         init_container {
