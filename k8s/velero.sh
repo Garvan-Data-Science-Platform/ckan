@@ -1,0 +1,2 @@
+#!/bin/bash
+velero install --use-volume-snapshots=false --default-volumes-to-fs-backup --use-node-agent --provider gcp --plugins velero/velero-plugin-for-gcp:v1.10.0 --bucket k3s-test-backup --secret-file ./garvan-data-hub-dev-3a003775c064.json

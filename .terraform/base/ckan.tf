@@ -21,14 +21,14 @@ resource "kubernetes_deployment" "ckan" {
       }
       spec {
 
-      node_selector = {
-          "kubernetes.io/hostname": "k3s"
-      }
+        node_selector = {
+            "kubernetes.io/hostname": "k3s"
+        }
 
         volume {
             name = "ckan-volume-mount"
             persistent_volume_claim {
-                claim_name = "ckan-claim"
+                claim_name = "ckan-claim-2"
             }
         }
 
@@ -38,6 +38,7 @@ resource "kubernetes_deployment" "ckan" {
 
         container {
           image = "australia-southeast1-docker.pkg.dev/dsp-registry-410602/docker/ckan:mac"
+          image_pull_policy = "Always"
           name  = "ckan"
           port {
             container_port = 8000
@@ -47,6 +48,12 @@ resource "kubernetes_deployment" "ckan" {
             name = "ckan-volume-mount"
             #sub_path = "redis"
           }
+
+          resources {
+            limits = {
+            cpu = 1
+          }
+        }
 
           command = ["./docker/entrypoint.sh"]
 
@@ -108,7 +115,7 @@ resource "kubernetes_deployment" "ckan" {
 
 resource "kubernetes_persistent_volume_claim" "ckan" {
   metadata {
-    name = "ckan-claim"
+    name = "ckan-claim-2"
     labels = {
         App = "ckan-${var.env}"
     }

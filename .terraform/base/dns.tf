@@ -37,12 +37,17 @@ resource "kubernetes_ingress_v1" "gke-ingress" {
   metadata {
     name = "gke-ingress"
     annotations = {
-        "ingress.gcp.kubernetes.io/pre-shared-cert"=google_compute_managed_ssl_certificate.lb_default.name
+        "cert-manager.io/issuer"="letsencrypt-prod"
+        "nginx.ingress.kubernetes.io/rewrite-target"="/"
     }
   }
 
   spec {
     ingress_class_name = "nginx"
+    tls {
+      hosts = ["${var.subdomain}.dsp.garvan.org.au"]
+      secret_name = "test-tls"
+    }
     rule {
       host = "${var.subdomain}.dsp.garvan.org.au"
       http {
@@ -59,6 +64,85 @@ resource "kubernetes_ingress_v1" "gke-ingress" {
           }
         }
       }
+    }
+  }
+}
+
+resource "kubernetes_ingress_v1" "gke-ingress-2" {
+  metadata {
+    name = "gke-ingress-2"
+    annotations = {
+      "cert-manager.io/issuer"="letsencrypt-prod"
+      "nginx.ingress.kubernetes.io/rewrite-target"="ckan-static/base/$1"
+    }
+  }
+
+  spec {
+    ingress_class_name = "nginx"
+    tls {
+      hosts = ["${var.subdomain}.dsp.garvan.org.au"]
+      secret_name = "test-tls"
+    }
+    rule {
+      host = "${var.subdomain}.dsp.garvan.org.au"
+      http {
+        path {
+          path = "/base/(.+)"
+          backend {
+            service {
+              name = "bucket-${var.env}"
+              port {
+                number = 80
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+resource "kubernetes_ingress_v1" "gke-ingress-3" {
+  metadata {
+    name = "gke-ingress-3"
+    annotations = {
+        "nginx.ingress.kubernetes.io/rewrite-target"="ckan-static/webassets/$1"
+    }
+  }
+
+  spec {
+    ingress_class_name = "nginx"
+    rule {
+      host = "${var.subdomain}.dsp.garvan.org.au"
+      http {
+        path {
+          path = "/webassets/(.+)"
+          backend {
+            service {
+              name = "bucket-${var.env}"
+              port {
+                number = 80
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+resource "kubernetes_service" "bucket" {
+  
+  metadata {
+    name = "bucket-${var.env}"
+  }
+  spec {
+    type = "ExternalName"
+    external_name = "storage.googleapis.com"
+
+    port {
+      port = 80
+      target_port = 80
     }
   }
 }
