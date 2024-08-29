@@ -166,7 +166,7 @@ ckan.cors.origin_whitelist =
 ## Plugins Settings ############################################################
 ckan.plugins = activity saml2auth datastore datatables_view hierarchy_display hierarchy_form xloader pages noanonaccess
 ckan.resource_proxy.timeout = 5
-ckanext.noanonaccess.allowed_paths = /user/login /user/saml2login /user/_logout /user/logged_out_redirect
+ckanext.noanonaccess.allowed_paths = /user/login /user/saml2login /user/_logout /user/logged_out_redirect /sso/post
 
 ## Datastore
 ckan.datastore.write_url = postgresql://ckan_default:{{DB_PASS}}@{{DB_HOST}}/datastore_default
