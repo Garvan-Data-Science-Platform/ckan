@@ -79,8 +79,9 @@ def read(package_type: str, id: str, resource_id: str) -> Union[Response, str]:
                                         id=id, resource_id=resource_id)
                 )
         return base.abort(
-            404,
-            _(u'Dataset not found')
+            403,
+            _(u'It is not possible to access files/folders from a private dataset. \
+              Contact the dataset owner to request access.')
         )
 
     resource = None

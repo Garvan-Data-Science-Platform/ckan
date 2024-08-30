@@ -84,6 +84,8 @@ def package_list(context: Context, data_dict: DataDict) -> ActionResult.PackageL
     model = context["model"]
     api = context.get("api_version", 1)
 
+    context["ignore_auth"] = True
+
     _check_access('package_list', context, data_dict)
 
     package_table = model.package_table
@@ -92,7 +94,7 @@ def package_list(context: Context, data_dict: DataDict) -> ActionResult.PackageL
     query = _select([col])
     query = query.where(_and_(
         package_table.c["state"] == 'active',
-        package_table.c["private"] == False,
+        #package_table.c["private"] == False,
     ))
     query = query.order_by(col)
 
@@ -146,7 +148,7 @@ def current_package_list_with_resources(
 
     search = package_search(context, {
         'q': '', 'rows': limit, 'start': offset,
-        'include_private': authz.is_sysadmin(user) })
+        'include_private': True})#authz.is_sysadmin(user) })
     return search.get('results', [])
 
 
@@ -1929,7 +1931,7 @@ def package_search(context: Context, data_dict: DataDict) -> ActionResult.Packag
 
         # Pop these ones as Solr does not need them
         extras = data_dict.pop('extras', None)
-
+        context["ignore_auth"] = True
         # enforce permission filter based on user
         if context.get('ignore_auth') or (user and authz.is_sysadmin(user)):
             labels = None

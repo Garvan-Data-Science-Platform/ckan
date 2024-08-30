@@ -442,6 +442,8 @@ def read(package_type: str, id: str) -> Union[Response, str]:
     })
     data_dict = {u'id': id, u'include_tracking': True}
 
+    context['ignore_auth'] = True
+
     # check if package exists
     try:
         pkg_dict = get_action(u'package_show')(context, data_dict)
