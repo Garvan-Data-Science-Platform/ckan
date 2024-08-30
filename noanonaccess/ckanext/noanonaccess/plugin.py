@@ -70,7 +70,7 @@ class NoanonaccessPlugin(plugins.SingletonPlugin):
             "util.internal_redirect",  # internal redirect
             "api.i18n_js_translations",  # i18n js translations
             "webassets.index",  # webassets files eg. js, css files urls
-            "api.action",  # api calls
+            # "api.action",  # api calls
             "_debug_toolbar.static",  # debug toolbar static files
             "resource.download",  # resource download url
             "dataset_resource.download",  # dataset resource download url
