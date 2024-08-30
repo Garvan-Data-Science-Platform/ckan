@@ -104,7 +104,7 @@ ckan.auth.allow_admin_collaborators = false
 ckan.auth.allow_collaborators_to_change_owner_org = false
 ckan.auth.create_default_api_keys = false
 ckan.auth.login_view = user.login
-ckan.auth.reveal_private_datasets = false
+ckan.auth.reveal_private_datasets = true
 ckan.auth.enable_cookie_auth_in_api = true
 ckan.auth.route_after_login = dashboard.datasets
 
