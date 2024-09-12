@@ -50,9 +50,3 @@ jobs:
             australia-southeast1-docker.pkg.dev/dsp-registry-410602/docker/ckan:${{steps.vars.outputs.sha_short}}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-      - name: Deploy backend
-        run: |-
-          echo '${{ secrets.KUBE_CONFIG_DEV }}' > kube.yml
-          KUBECONFIG=kube.yml kubectl set image deployment/ckan-dev ckan="australia-southeast1-docker.pkg.dev/dsp-registry-410602/docker/ckan:${{steps.vars.outputs.sha_short}}"
-          KUBECONFIG=kube.yml kubectl set image deployment/worker-dev worker="australia-southeast1-docker.pkg.dev/dsp-registry-410602/docker/ckan:${{steps.vars.outputs.sha_short}}"
