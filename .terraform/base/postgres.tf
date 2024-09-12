@@ -5,8 +5,10 @@ resource "helm_release" "postgres" {
   #repository       = "https://helm.elastic.co"
   chart            = "oci://registry-1.docker.io/bitnamicharts/postgresql"
 
-  depends_on = [google_container_node_pool.primary_nodes]
-
+  #set {
+  #  name = "primary.nodeSelector"
+  #  value = yamlencode({"kubernetes.io/hostname": "k3s"})
+  #}
   set {
     name = "auth.password"
     value = data.google_secret_manager_secret_version.postgres_password.secret_data
@@ -46,7 +48,7 @@ resource "helm_release" "postgres" {
 }
 
 resource "google_secret_manager_secret" "postgres_password" {
-  secret_id = "postgres-password-${var.env}"
+  secret_id = "postgres-password-${var.env}-k3s"
 
   replication {
     user_managed {
@@ -57,7 +59,7 @@ resource "google_secret_manager_secret" "postgres_password" {
   }
 
   provisioner "local-exec" { #This creates a randomly generated password
-    command = "head /dev/urandom | LC_ALL=C tr -dc A-Za-z0-9 | head -c10 | gcloud secrets versions add postgres-password-${var.env} --project=${var.project_id} --data-file=-"
+    command = "head /dev/urandom | LC_ALL=C tr -dc A-Za-z0-9 | head -c10 | gcloud secrets versions add postgres-password-${var.env}-k3s --project=${var.project_id} --data-file=-"
   }
 }
 

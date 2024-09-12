@@ -1,8 +1,6 @@
-resource "google_compute_managed_ssl_certificate" "lb_default" {
-  provider = google-beta
-  name     = "ckan-${var.env}-ssl-cert-2"
-
-  managed {
-    domains = ["${var.subdomain}.dsp.garvan.org.au"]
-  }
+module "cert_manager" {
+  source        = "terraform-iaac/cert-manager/kubernetes"
+  cluster_issuer_email                   = "t.kallady@garvan.org.au"
+  cluster_issuer_name                    = "cert-manager-global"
+  cluster_issuer_private_key_secret_name = "cert-manager-private-key"
 }

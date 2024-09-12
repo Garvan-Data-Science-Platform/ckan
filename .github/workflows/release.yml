@@ -21,23 +21,8 @@ jobs:
         id: vars
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
-      - name: authenticate to google cloud
-        id: "auth"
-        uses: "google-github-actions/auth@v2"
-        with:
-          workload_identity_provider: "projects/1008866204922/locations/global/workloadIdentityPools/ckan-gh-identity-pool/providers/ckan-gh-provider"
-          service_account: datahub-sa@garvan-data-hub-dev.iam.gserviceaccount.com
-
-      - name: "setup gcloud sdk"
-        uses: google-github-actions/setup-gcloud@v0
-
-      - uses: google-github-actions/get-gke-credentials@db150f2cc60d1716e61922b832eae71d2a45938f
-        with:
-          cluster_name: garvan-data-hub-dev-gke
-          location: australia-southeast1-a
-          project_id: garvan-data-hub-dev
-
       - name: Deploy backend
         run: |-
-          kubectl set image deployment/ckan-dev ckan="australia-southeast1-docker.pkg.dev/dsp-registry-410602/docker/ckan:${{steps.vars.outputs.sha_short}}"
-          kubectl set image deployment/worker-dev worker="australia-southeast1-docker.pkg.dev/dsp-registry-410602/docker/ckan:${{steps.vars.outputs.sha_short}}"
+          echo '${{ secrets.KUBE_CONFIG_DEV }}' > kube.yml
+          KUBECONFIG=kube.yml kubectl set image deployment/ckan-dev ckan="australia-southeast1-docker.pkg.dev/dsp-registry-410602/docker/ckan:${{steps.vars.outputs.sha_short}}"
+          KUBECONFIG=kube.yml kubectl set image deployment/worker-dev worker="australia-southeast1-docker.pkg.dev/dsp-registry-410602/docker/ckan:${{steps.vars.outputs.sha_short}}"

@@ -18,7 +18,12 @@ resource "kubernetes_deployment" "worker" {
           App = "worker-${var.env}"
         }
       }
+      
       spec {
+
+        image_pull_secrets {
+          name="regcred"
+        }
 
         container {
           image = "australia-southeast1-docker.pkg.dev/dsp-registry-410602/docker/ckan:latest"
@@ -28,7 +33,7 @@ resource "kubernetes_deployment" "worker" {
 
           env {
             name = "SITE_URL"
-            value = "https://${var.subdomain}.dsp.garvan.org.au"
+            value = "https://${var.subdomain}.garvan.org.au"
           }
           env {
             name = "SESS_KEY"
@@ -64,7 +69,7 @@ resource "kubernetes_deployment" "worker" {
           }
           env {
             name = "SAML_ENTITY"
-            value = "${var.subdomain}.dsp.garvan.org.au"
+            value = "${var.subdomain}.garvan.org.au"
           }
         }
       }

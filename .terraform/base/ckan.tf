@@ -12,6 +12,7 @@ resource "kubernetes_deployment" "ckan" {
         App = "ckan-${var.env}"
       }
     }
+
     template {
       metadata {
         labels = {
@@ -27,8 +28,13 @@ resource "kubernetes_deployment" "ckan" {
             }
         }
 
+        image_pull_secrets {
+          name="regcred"
+        }
+
         container {
           image = "australia-southeast1-docker.pkg.dev/dsp-registry-410602/docker/ckan:latest"
+          image_pull_policy = "Always"
           name  = "ckan"
           port {
             container_port = 8000
@@ -45,11 +51,17 @@ resource "kubernetes_deployment" "ckan" {
             }
           }
 
+          resources {
+            limits = {
+            cpu = 1
+          }
+        }
+
           command = ["./docker/entrypoint.sh"]
 
           env {
             name = "SITE_URL"
-            value = "https://${var.subdomain}.dsp.garvan.org.au"
+            value = "https://${var.subdomain}.garvan.org.au"
           }
           env {
             name = "SESS_KEY"
@@ -93,7 +105,7 @@ resource "kubernetes_deployment" "ckan" {
           }
           env {
             name = "SAML_ENTITY"
-            value = "${var.subdomain}.dsp.garvan.org.au"
+            value = "ckan.dsp.garvan.org.au"
           }
         }
       }
@@ -102,34 +114,6 @@ resource "kubernetes_deployment" "ckan" {
   }
 }
 
-resource "google_compute_disk" "ckan" {
-  name  = "garvan-ckan"
-  type  = "pd-ssd"
-  zone  = var.location
-  #image = "debian-11-bullseye-v20220719"
-  size = 20 #Gb
-  labels = {
-    environment = "dev"
-  }
-  physical_block_size_bytes = 4096
-}
-
-resource "kubernetes_persistent_volume" "ckan" {
-  metadata {
-    name = "ckan-pv"
-  }
-  spec {
-    capacity = {
-      storage = "20Gi"
-    }
-    access_modes = ["ReadWriteOnce"]
-    persistent_volume_source {
-      gce_persistent_disk {
-        pd_name = google_compute_disk.ckan.name
-      }
-    }
-  }
-}
 
 resource "kubernetes_persistent_volume_claim" "ckan" {
   metadata {
@@ -138,8 +122,10 @@ resource "kubernetes_persistent_volume_claim" "ckan" {
         App = "ckan-${var.env}"
     }
   }
+  depends_on = [helm_release.postgres]
   spec {
     access_modes = ["ReadWriteOnce"]
+    storage_class_name = "local-path"
     resources {
       requests = {
         storage = "20Gi"
@@ -158,7 +144,7 @@ data "google_secret_manager_secret_version" "sendgrid_api_key" {
 }
 
 resource "google_secret_manager_secret" "sess_key" {
-  secret_id = "sess-key-${var.env}"
+  secret_id = "sess-key-${var.env}-k3s"
 
   replication {
     user_managed {
@@ -169,7 +155,7 @@ resource "google_secret_manager_secret" "sess_key" {
   }
 
   provisioner "local-exec" { #This creates a randomly generated password
-    command = "head /dev/urandom | LC_ALL=C tr -dc A-Za-z0-9 | head -c10 | gcloud secrets versions add sess-key-${var.env} --project=${var.project_id} --data-file=-"
+    command = "head /dev/urandom | LC_ALL=C tr -dc A-Za-z0-9 | head -c10 | gcloud secrets versions add sess-key-${var.env}-k3s --project=${var.project_id} --data-file=-"
   }
 }
 
@@ -182,7 +168,7 @@ data "google_secret_manager_secret_version" "xloader_token" {
 }
 
 resource "google_secret_manager_secret" "secret_key" {
-  secret_id = "secret-key-${var.env}"
+  secret_id = "secret-key-${var.env}-k3s"
 
   replication {
     user_managed {
@@ -193,7 +179,7 @@ resource "google_secret_manager_secret" "secret_key" {
   }
 
   provisioner "local-exec" { #This creates a randomly generated password
-    command = "head /dev/urandom | LC_ALL=C tr -dc A-Za-z0-9 | head -c10 | gcloud secrets versions add secret-key-${var.env} --project=${var.project_id} --data-file=-"
+    command = "head /dev/urandom | LC_ALL=C tr -dc A-Za-z0-9 | head -c10 | gcloud secrets versions add secret-key-${var.env}-k3s --project=${var.project_id} --data-file=-"
   }
 }
 
@@ -205,9 +191,7 @@ data "google_secret_manager_secret_version" "secret_key" {
 resource "kubernetes_service" "ckan" {
   
   metadata {
-    annotations = {
-      "cloud.google.com/neg": "{\"ingress\": true}",
-    }
+
     name = "ckan-${var.env}"
     labels = {
         App = "ckan-${var.env}"

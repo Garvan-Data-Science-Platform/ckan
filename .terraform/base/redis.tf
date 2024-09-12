@@ -6,7 +6,6 @@ resource "helm_release" "redis" {
   chart            = "oci://registry-1.docker.io/bitnamicharts/redis"
   #version          = "7.16.3"
 
-  depends_on = [google_container_node_pool.primary_nodes]
 
   #set {
   #  name = "auth.password"
