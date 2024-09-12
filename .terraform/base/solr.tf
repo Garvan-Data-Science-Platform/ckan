@@ -18,10 +18,6 @@ resource "kubernetes_deployment" "solr" {
       }
       spec {
 
-        node_selector = {
-          "kubernetes.io/hostname": "k3s"
-        }
-
         init_container {
           name="volume-permissions"
           image="busybox"
@@ -71,7 +67,7 @@ resource "kubernetes_persistent_volume_claim" "solr" {
     access_modes = ["ReadWriteOnce"]
     resources {
       requests = {
-        storage = "1Gi"
+        storage = "5Gi"
       }
     }
     storage_class_name = "local-path"

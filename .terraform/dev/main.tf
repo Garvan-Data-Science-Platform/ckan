@@ -10,10 +10,14 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = ">= 2.0.1"
     }
+    kubectl = {
+      source  = "alekc/kubectl"
+      version = ">= 2.0.2"
+    }
   }
   backend "gcs" {
     bucket = "terraform-state-ckan"
-    prefix = "dev-k3s"
+    prefix = "datahub-dev"
   }
 }
 
@@ -25,7 +29,7 @@ module "base" {
     location = "australia-southeast1-a"
     sa_email = "datahub-sa@garvan-data-hub-dev.iam.gserviceaccount.com"
     env = "dev"
-    subdomain = "ckan-dev-k3s"
+    subdomain = "ckan.dsp"
     nodes = 1
 }
 
@@ -42,15 +46,30 @@ provider "google-beta" {
 data "google_client_config" "default" {}
 
 provider "kubernetes" {
-  host = module.base.kubernetes_cluster_host
-  token                  = data.google_client_config.default.access_token
-  cluster_ca_certificate = module.base.cluster_ca
+  config_path = "~/.kube/datahub-dev.yml"
+  config_context = "default"
 }
 
 provider "helm" {
   kubernetes {
-    host = module.base.kubernetes_cluster_host
-    token                  = data.google_client_config.default.access_token
-    cluster_ca_certificate = module.base.cluster_ca
+    config_path = "~/.kube/datahub-dev.yml"
+    config_context = "default"
   }
+}
+
+provider "kubectl" {
+  config_path = "~/.kube/datahub-dev.yml"
+  config_context = "default"
+}
+
+resource "google_dns_record_set" "ckan" {
+
+  name = "ckan.dsp.garvan.org.au."
+  type = "A"
+  ttl  = 300
+
+  managed_zone = "dsp"
+  project = "ctrl-358804"
+
+  rrdatas = ["10.214.132.51"]
 }

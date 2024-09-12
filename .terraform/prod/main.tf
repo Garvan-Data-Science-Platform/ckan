@@ -10,30 +10,28 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = ">= 2.0.1"
     }
+    kubectl = {
+      source  = "alekc/kubectl"
+      version = ">= 2.0.2"
+    }
   }
   backend "gcs" {
     bucket = "terraform-state-ckan"
-    prefix = "prod"
+    prefix = "prod-k3s"
   }
 }
 
 module "base" {
     source = "../base"
-
     project_id = "garvan-data-hub"
     region     = "australia-southeast1"
     location = "australia-southeast1-a"
     sa_email = "datahub-sa@garvan-data-hub.iam.gserviceaccount.com"
     env = "prod"
-    subdomain = "ckan"
+    subdomain = "datahub"
     nodes = 2
-    machine_type = "n2-standard-2"
 }
 
-output "kubernetes_cluster_name" {
-  value       = module.base.kubernetes_cluster_name
-  description = "GKE Cluster Name"
-}
 
 provider "google" {
   project = module.base.project_id
@@ -45,18 +43,19 @@ provider "google-beta" {
   region  = module.base.region
 }
 
-data "google_client_config" "default" {}
-
 provider "kubernetes" {
-  host = module.base.kubernetes_cluster_host
-  token                  = data.google_client_config.default.access_token
-  cluster_ca_certificate = module.base.cluster_ca
+  config_path = "~/.kube/datahub-prod.yml"
+  config_context = "default"
 }
 
 provider "helm" {
   kubernetes {
-    host = module.base.kubernetes_cluster_host
-    token                  = data.google_client_config.default.access_token
-    cluster_ca_certificate = module.base.cluster_ca
+    config_path = "~/.kube/datahub-prod.yml"
+    config_context = "default"
   }
+}
+
+provider "kubectl" {
+  config_path = "~/.kube/datahub-prod.yml"
+  config_context = "default"
 }

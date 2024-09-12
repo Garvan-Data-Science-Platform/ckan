@@ -33,7 +33,7 @@ resource "kubernetes_deployment" "worker" {
 
           env {
             name = "SITE_URL"
-            value = "https://${var.subdomain}.dsp.garvan.org.au"
+            value = "https://${var.subdomain}.garvan.org.au"
           }
           env {
             name = "SESS_KEY"
@@ -69,7 +69,7 @@ resource "kubernetes_deployment" "worker" {
           }
           env {
             name = "SAML_ENTITY"
-            value = "${var.subdomain}.dsp.garvan.org.au"
+            value = "${var.subdomain}.garvan.org.au"
           }
         }
       }

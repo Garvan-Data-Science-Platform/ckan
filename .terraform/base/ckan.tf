@@ -21,14 +21,10 @@ resource "kubernetes_deployment" "ckan" {
       }
       spec {
 
-        node_selector = {
-            "kubernetes.io/hostname": "k3s"
-        }
-
         volume {
             name = "ckan-volume-mount"
             persistent_volume_claim {
-                claim_name = "ckan-claim-2"
+                claim_name = "ckan-claim"
             }
         }
 
@@ -37,7 +33,7 @@ resource "kubernetes_deployment" "ckan" {
         }
 
         container {
-          image = "australia-southeast1-docker.pkg.dev/dsp-registry-410602/docker/ckan:mac"
+          image = "australia-southeast1-docker.pkg.dev/dsp-registry-410602/docker/ckan:latest"
           image_pull_policy = "Always"
           name  = "ckan"
           port {
@@ -59,7 +55,7 @@ resource "kubernetes_deployment" "ckan" {
 
           env {
             name = "SITE_URL"
-            value = "https://${var.subdomain}.dsp.garvan.org.au"
+            value = "https://${var.subdomain}.garvan.org.au"
           }
           env {
             name = "SESS_KEY"
@@ -103,7 +99,7 @@ resource "kubernetes_deployment" "ckan" {
           }
           env {
             name = "SAML_ENTITY"
-            value = "${var.subdomain}.dsp.garvan.org.au"
+            value = "ckan.dsp.garvan.org.au"
           }
         }
       }
@@ -115,17 +111,18 @@ resource "kubernetes_deployment" "ckan" {
 
 resource "kubernetes_persistent_volume_claim" "ckan" {
   metadata {
-    name = "ckan-claim-2"
+    name = "ckan-claim"
     labels = {
         App = "ckan-${var.env}"
     }
   }
+  depends_on = [helm_release.postgres]
   spec {
     access_modes = ["ReadWriteOnce"]
     storage_class_name = "local-path"
     resources {
       requests = {
-        storage = "1Gi"
+        storage = "20Gi"
       }
     }
   }

@@ -1,14 +1,4 @@
-resource "google_dns_record_set" "ckan" {
 
-  name = "${var.subdomain}.dsp.garvan.org.au."
-  type = "A"
-  ttl  = 300
-
-  managed_zone = "dsp"
-  project = "ctrl-358804"
-
-  rrdatas = ["34.151.105.103"]
-}
 
 
 resource "kubernetes_service" "primary" {
@@ -37,7 +27,7 @@ resource "kubernetes_ingress_v1" "gke-ingress" {
   metadata {
     name = "gke-ingress"
     annotations = {
-        "cert-manager.io/issuer"="letsencrypt-prod"
+        "cert-manager.io/cluster-issuer"=module.cert_manager.cluster_issuer_name
         "nginx.ingress.kubernetes.io/rewrite-target"="/"
     }
   }
@@ -45,11 +35,11 @@ resource "kubernetes_ingress_v1" "gke-ingress" {
   spec {
     ingress_class_name = "nginx"
     tls {
-      hosts = ["${var.subdomain}.dsp.garvan.org.au"]
-      secret_name = "test-tls"
+      hosts = ["${var.subdomain}.garvan.org.au"]
+      secret_name = "cert-manager-private-key"
     }
     rule {
-      host = "${var.subdomain}.dsp.garvan.org.au"
+      host = "${var.subdomain}.garvan.org.au"
       http {
         path {
           path = "/"
@@ -80,11 +70,11 @@ resource "kubernetes_ingress_v1" "gke-ingress-2" {
   spec {
     ingress_class_name = "nginx"
     tls {
-      hosts = ["${var.subdomain}.dsp.garvan.org.au"]
+      hosts = ["${var.subdomain}.garvan.org.au"]
       secret_name = "test-tls"
     }
     rule {
-      host = "${var.subdomain}.dsp.garvan.org.au"
+      host = "${var.subdomain}.garvan.org.au"
       http {
         path {
           path = "/base/(.+)"
@@ -113,7 +103,7 @@ resource "kubernetes_ingress_v1" "gke-ingress-3" {
   spec {
     ingress_class_name = "nginx"
     rule {
-      host = "${var.subdomain}.dsp.garvan.org.au"
+      host = "${var.subdomain}.garvan.org.au"
       http {
         path {
           path = "/webassets/(.+)"

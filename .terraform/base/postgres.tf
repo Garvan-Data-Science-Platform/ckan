@@ -5,10 +5,10 @@ resource "helm_release" "postgres" {
   #repository       = "https://helm.elastic.co"
   chart            = "oci://registry-1.docker.io/bitnamicharts/postgresql"
 
-  set {
-    name = "primary.nodeSelector"
-    value = yamlencode({"kubernetes.io/hostname": "k3s"})
-  }
+  #set {
+  #  name = "primary.nodeSelector"
+  #  value = yamlencode({"kubernetes.io/hostname": "k3s"})
+  #}
   set {
     name = "auth.password"
     value = data.google_secret_manager_secret_version.postgres_password.secret_data
