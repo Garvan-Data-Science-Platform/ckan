@@ -11,6 +11,8 @@ RUN pip install -r https://raw.githubusercontent.com/ckan/ckanext-xloader/master
     && pip install gunicorn && pip install -r requirements.txt && pip install -r plugins.txt
 
 RUN pip install -e 'git+https://github.com/ckan/ckanext-pages.git#egg=ckanext-pages'
+COPY noanonaccess /app/noanonaccess
+RUN pip install -e /app/noanonaccess
 
 COPY . .
 

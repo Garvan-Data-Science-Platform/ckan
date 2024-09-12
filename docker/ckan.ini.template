@@ -104,7 +104,7 @@ ckan.auth.allow_admin_collaborators = false
 ckan.auth.allow_collaborators_to_change_owner_org = false
 ckan.auth.create_default_api_keys = false
 ckan.auth.login_view = user.login
-ckan.auth.reveal_private_datasets = false
+ckan.auth.reveal_private_datasets = true
 ckan.auth.enable_cookie_auth_in_api = true
 ckan.auth.route_after_login = dashboard.datasets
 
@@ -164,8 +164,9 @@ ckan.cors.origin_allow_all = false
 ckan.cors.origin_whitelist = 
 
 ## Plugins Settings ############################################################
-ckan.plugins = activity saml2auth datastore datatables_view hierarchy_display hierarchy_form xloader pages
+ckan.plugins = activity saml2auth datastore datatables_view hierarchy_display hierarchy_form xloader pages noanonaccess
 ckan.resource_proxy.timeout = 5
+ckanext.noanonaccess.allowed_paths = /user/login /user/saml2login /user/_logout /user/logged_out_redirect /sso/post
 
 ## Datastore
 ckan.datastore.write_url = postgresql://ckan_default:{{DB_PASS}}@{{DB_HOST}}/datastore_default
@@ -185,7 +186,7 @@ ckanext.saml2auth.user_email = email
 ckanext.saml2auth.idp_metadata.remote_cert = /home/tkallady/okta.cert
 ckanext.saml2auth.acs_endpoint = /sso/post
 ckanext.saml2auth.entity_id = {{SAML_ENTITY}}
-ckanext.saml2auth.enable_ckan_internal_login = True
+ckanext.saml2auth.enable_ckan_internal_login = False
 
 
 ## Front-End Settings ##########################################################

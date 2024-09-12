@@ -44,6 +44,12 @@ resource "kubernetes_deployment" "ckan" {
             name = "ckan-volume-mount"
             #sub_path = "redis"
           }
+          liveness_probe {
+            http_get {
+              path = "/api/i18n/en"
+              port = 8000
+            }
+          }
 
           resources {
             limits = {
