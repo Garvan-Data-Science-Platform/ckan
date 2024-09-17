@@ -33,7 +33,7 @@ services:
       - ../ckan:/app/ckan
     ports:
       - 8000:8000
-    command: ./docker/entrypoint.sh
+    command: ./docker/entrypoint-dev.sh
 
   xloader:
     depends_on:
