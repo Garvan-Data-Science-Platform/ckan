@@ -1,0 +1,18 @@
+replicas: 1
+
+minimumMasterNodes: 1
+
+requests:
+  cpu: 10m
+  memory: 500Mi
+
+volumeClaimTemplate:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 10Gi
+
+resources:
+  requests:
+    cpu: "10m"
+    memory: "500Mi"

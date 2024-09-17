@@ -51,9 +51,9 @@ resource "kubernetes_deployment" "ckan" {
             }
           }
 
-          resources {
-            limits = {
-            cpu = 1
+        resources {
+          requests = {
+            cpu = "10m"
           }
         }
 
