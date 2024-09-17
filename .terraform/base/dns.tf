@@ -27,17 +27,17 @@ resource "kubernetes_ingress_v1" "gke-ingress" {
   metadata {
     name = "gke-ingress"
     annotations = {
-        "cert-manager.io/cluster-issuer"=module.cert_manager.cluster_issuer_name
+        #"cert-manager.io/cluster-issuer"=module.cert_manager.cluster_issuer_name
         "nginx.ingress.kubernetes.io/rewrite-target"="/"
     }
   }
 
   spec {
     ingress_class_name = "nginx"
-    tls {
-      hosts = ["${var.subdomain}.garvan.org.au"]
-      secret_name = "cert-manager-private-key"
-    }
+    #tls {
+    #  hosts = ["${var.subdomain}.garvan.org.au"]
+    #  secret_name = "cert-manager-private-key"
+    #}
     rule {
       host = "${var.subdomain}.garvan.org.au"
       http {
@@ -62,17 +62,17 @@ resource "kubernetes_ingress_v1" "gke-ingress-2" {
   metadata {
     name = "gke-ingress-2"
     annotations = {
-      "cert-manager.io/issuer"="letsencrypt-prod"
+      #"cert-manager.io/cluster-issuer"=module.cert_manager.cluster_issuer_name
       "nginx.ingress.kubernetes.io/rewrite-target"="ckan-static/base/$1"
     }
   }
 
   spec {
     ingress_class_name = "nginx"
-    tls {
-      hosts = ["${var.subdomain}.garvan.org.au"]
-      secret_name = "test-tls"
-    }
+    #tls {
+    #  hosts = ["${var.subdomain}.garvan.org.au"]
+    #  secret_name = "test-tls"
+    #}
     rule {
       host = "${var.subdomain}.garvan.org.au"
       http {
