@@ -1,0 +1,25 @@
+kind: ClusterIssuer
+apiVersion: cert-manager.io/v1
+metadata:
+  name: cert-manager-global
+spec:
+  acme:
+    privateKeySecretRef:
+      name: cert-manager-private-key
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: "t.kallady@garvan.org.au" # <- your email
+    solvers:
+      - dns01:
+          webhook:
+            groupName: acme.garvan.webhook
+            solverName: lego-solver # <- solver name
+            config:
+              # Available provider refer to https://go-acme.github.io/lego/dns/#dns-providers
+              provider: httpreq
+              envs:
+                {
+                  HTTPREQ_ENDPOINT: "https://acmeproxy.gimr.garvan.org.au:9096",
+                  HTTPREQ_MODE: "RAW",
+                  HTTPREQ_PROPAGATION_TIMEOUT: "60",
+                  HTTPREQ_HTTP_TIMEOUT: "60",
+                }

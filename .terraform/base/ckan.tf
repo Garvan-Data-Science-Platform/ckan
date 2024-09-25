@@ -61,7 +61,7 @@ resource "kubernetes_deployment" "ckan" {
 
           env {
             name = "SITE_URL"
-            value = "http://${var.subdomain}.garvan.org.au"
+            value = "https://${var.subdomain}.garvan.org.au"
           }
           env {
             name = "SESS_KEY"
