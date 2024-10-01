@@ -40,24 +40,24 @@ dataset_fields:
     form_placeholder: "1.0"
 
   - field_name: author
-    label: Author
+    label: Data Owner
     form_placeholder: Joe Bloggs
     display_property: dc:creator
 
   - field_name: author_email
-    label: Author Email
+    label: Data Owner Email
     form_placeholder: joe@example.com
     display_property: dc:creator
     display_snippet: email.html
     display_email_name_field: author
 
   - field_name: maintainer
-    label: Owner/Analyst
+    label: Alternative Contact
     form_placeholder: Joe Bloggs
     display_property: dc:contributor
 
   - field_name: maintainer_email
-    label: Owner/Analyst Email
+    label: Alternative Contact Email
     form_placeholder: joe@garvan.org.au
     display_property: dc:contributor
     display_snippet: email.html
