@@ -50,3 +50,6 @@ jobs:
             australia-southeast1-docker.pkg.dev/dsp-registry-410602/docker/ckan:${{steps.vars.outputs.sha_short}}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Job summary
+        run: echo 'TAG ${{steps.vars.outputs.sha_short}}' >> $GITHUB_STEP_SUMMARY
