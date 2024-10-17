@@ -18,6 +18,8 @@
 
   <input name="id" value="{{ data.id }}" type="hidden"/>
 
+    <p><strong>Important:</strong> Sensitive data, including clinical and personally identifiable information must not be uploaded.</p>
+    <p>Refer to <a href="/pages/user-guide">User Guide</a> for guidance on whether to <strong>Upload</strong> or <strong>Link</strong>.</p>
   {% block basic_fields %}
     {% block basic_fields_url %}
       {% set is_upload = (data.url_type == 'upload') %}
