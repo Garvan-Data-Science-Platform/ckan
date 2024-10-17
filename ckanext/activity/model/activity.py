@@ -446,7 +446,7 @@ def _organization_activity_query(org_id: str) -> QActivity:
             model.Package,
             and_(
                 model.Package.id == Activity.object_id,
-                model.Package.private == False,  # noqa
+                True#model.Package.private == False,  # noqa
             ),
         )
         .filter(

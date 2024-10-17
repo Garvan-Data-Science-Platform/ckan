@@ -315,7 +315,7 @@ def group_activity_list(
         after=after,
         before=before,
         include_hidden_activity=include_hidden_activity,
-        activity_types=activity_types
+        activity_types=activity_types,
     )
 
     return model_activity.activity_list_dictize(activity_objects, context)
@@ -374,7 +374,7 @@ def organization_activity_list(
         after=after,
         before=before,
         include_hidden_activity=include_hidden_activity,
-        activity_types=activity_types
+        activity_types=activity_types,
     )
 
     return model_activity.activity_list_dictize(activity_objects, context)

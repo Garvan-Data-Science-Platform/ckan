@@ -94,8 +94,8 @@ def package_changed(sender: str, **kwargs: Any):
     pkg = context["model"].Package.get(id_)
     assert pkg
 
-    if pkg.private:
-        return
+    # if pkg.private:
+    #    return
 
     user_obj = context["model"].User.get(context["user"])
     if user_obj:
@@ -148,7 +148,7 @@ def group_or_org_changed(sender: str, **kwargs: Any):
         "group": dictization.table_dictize(group, context)
     }
     activity_create_context = tk.fresh_context(context)
-    activity_create_context['ignore_auth'] = True
+    activity_create_context["ignore_auth"] = True
     tk.get_action("activity_create")(activity_create_context, activity_dict)
 
 
@@ -173,5 +173,5 @@ def user_changed(sender: str, **kwargs: Any):
         "activity_type": activity_type,
     }
     activity_create_context = tk.fresh_context(context)
-    activity_create_context['ignore_auth'] = True
+    activity_create_context["ignore_auth"] = True
     tk.get_action("activity_create")(activity_create_context, activity_dict)
