@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   cypress:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     services:
       ckan-postgres:
         image: postgres:10
