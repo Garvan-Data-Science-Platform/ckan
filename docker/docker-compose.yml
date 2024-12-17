@@ -11,8 +11,18 @@ services:
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "ckan_default", "-d", "ckan_default"]
 
+  admin:
+    image: adminer
+    restart: always
+    depends_on:
+      - postgres
+    ports:
+      - 8081:8080
+
   solr:
-    image: ckan/ckan-solr:2.10-solr9
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile.solr
     volumes:
       - ./data/solr_data:/var/solr
     healthcheck:

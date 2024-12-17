@@ -24,6 +24,34 @@ dataset_fields:
     preset: tag_string_autocomplete
     form_placeholder: eg. economy, mental health, government
 
+  - field_name: assay_type
+    label: Assay Type
+    preset: multiple_select
+    choices_helper: assay_type
+    validators: assay_type ignore_missing
+    output_validators: assay_type_out
+
+  - field_name: source
+    label: Source
+    preset: multiple_select
+    choices_helper: source
+    validators: source ignore_missing
+    output_validators: source_out
+
+  - field_name: tissue
+    label: Tissue
+    preset: multiple_select
+    choices_helper: tissue
+    validators: tissue ignore_missing
+    output_validators: tissue_out
+
+  - field_name: factor
+    label: Factor of Interest
+    preset: multiple_select
+    choices_helper: factor
+    validators: factor ignore_missing
+    output_validators: factor_out
+
   - field_name: owner_org
     label: Organization
     preset: dataset_organization
@@ -69,17 +97,8 @@ dataset_fields:
   - field_name: ethics
     label: Ethics
 
-  - field_name: tissue
-    label: Tissue/Cell Type
-
-  - field_name: species
-    label: Species
-
   - field_name: disease
     label: Disease
-
-  - field_name: assays
-    label: Assay Types
 
 resource_fields:
   - field_name: url

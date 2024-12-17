@@ -1,0 +1,3 @@
+FROM ckan/ckan-solr:2.10-solr9.7
+
+COPY docker/schema.xml /var/solr/data/ckan/conf/managed-schema
