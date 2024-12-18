@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   cypress:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     services:
       ckan-postgres:
         image: postgres:10
@@ -30,7 +30,7 @@ jobs:
         ports:
           - 6379:6379
       ckan-solr:
-        image: ckan/ckan-solr:master
+        image: ckan/ckan-solr:2.10-solr9.7
         ports:
           - 8983:8983
 
@@ -41,7 +41,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - uses: actions/setup-node@v2-beta

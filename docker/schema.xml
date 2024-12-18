@@ -167,12 +167,19 @@ attribute with the form `ckan-X.Y` -->
 
     <field name="_version_" type="string" indexed="true" stored="true"/>
 
+    <!-- Extra Garvan fields -->
+    <field name="assay_type" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="source" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="tissue" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="factor" type="string" indexed="true" stored="true" multiValued="true"/>
+
     <dynamicField name="*_date" type="date" indexed="true" stored="true" multiValued="false"/>
 
     <dynamicField name="extras_*" type="text" indexed="true" stored="true" multiValued="false"/>
     <dynamicField name="res_extras_*" type="text" indexed="true" stored="true" multiValued="true"/>
     <dynamicField name="vocab_*" type="string" indexed="true" stored="true" multiValued="true"/>
     <dynamicField name="*" type="string" indexed="true"  stored="false"/>
+    
 </fields>
 
 <uniqueKey>index_id</uniqueKey>

@@ -51,5 +51,16 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      - name: Build and push solr
+        uses: docker/build-push-action@v3
+        with:
+          file: docker/Dockerfile.solr
+          push: true
+          tags: |
+            australia-southeast1-docker.pkg.dev/dsp-registry-410602/docker/solr:latest
+            australia-southeast1-docker.pkg.dev/dsp-registry-410602/docker/solr:${{steps.vars.outputs.sha_short}}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
       - name: Job summary
         run: echo 'TAG ${{steps.vars.outputs.sha_short}}' >> $GITHUB_STEP_SUMMARY

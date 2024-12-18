@@ -31,7 +31,7 @@ resource "kubernetes_deployment" "solr" {
         }
 
         container {
-          image = "ckan/ckan-solr:2.10-solr9"
+          image = "australia-southeast1-docker.pkg.dev/dsp-registry-410602/docker/solr"
           name  = "solr"
           port {
             container_port = 8983

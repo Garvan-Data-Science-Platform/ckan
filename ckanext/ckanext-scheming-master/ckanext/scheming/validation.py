@@ -3,6 +3,7 @@ import json
 import datetime
 from collections import defaultdict
 import itertools
+from .tags import tags
 
 import pytz
 import six
@@ -17,14 +18,18 @@ from ckantoolkit import (
     StopOnError,
     _,
     unicode_safe,
+    get_converter,
 )
 
 import ckanext.scheming.helpers as sh
 from ckanext.scheming.errors import SchemingException
+import logging
 
-OneOf = get_validator('OneOf')
-ignore_missing = get_validator('ignore_missing')
-not_empty = get_validator('not_empty')
+log = logging.getLogger(__name__)
+
+OneOf = get_validator("OneOf")
+ignore_missing = get_validator("ignore_missing")
+not_empty = get_validator("not_empty")
 
 all_validators = {}
 
@@ -53,9 +58,9 @@ register_validator(unicode_safe)
 
 @register_validator
 def strip_value(value):
-    '''
+    """
     **starting from CKAN 2.10 this is included in CKAN core**
-    '''
+    """
     return value.strip()
 
 
@@ -65,19 +70,56 @@ def scheming_choices(field, schema):
     """
     Require that one of the field choices values is passed.
     """
-    if 'choices' in field:
-        return OneOf([c['value'] for c in field['choices']])
+    if "choices" in field:
+        return OneOf([c["value"] for c in field["choices"]])
 
     def validator(value):
         if value is missing or not value:
             return value
         choices = sh.scheming_field_choices(field)
         for choice in choices:
-            if value == choice['value']:
+            if value == choice["value"]:
                 return value
         raise Invalid(_('unexpected choice "%s"') % value)
 
     return validator
+
+
+for tag in tags:
+    all_validators[tag["vocabulary"]] = get_converter("convert_to_tags")(
+        tag["vocabulary"]
+    )
+    all_validators[tag["vocabulary"] + "_out"] = get_converter(
+        "convert_from_tags"
+    )(tag["vocabulary"])
+
+
+'''
+@scheming_validator
+@register_validator
+def assay_type(field, schema):
+    """
+    Require that one of the field choices values is passed.
+    """
+
+    return get_converter("convert_to_tags")("assay_type")
+
+
+@scheming_validator
+@register_validator
+def assay_type_out(field, schema):
+    """
+    Require that one of the field choices values is passed.
+    """
+
+    return get_converter("convert_from_tags")("assay_type")
+'''
+
+
+@scheming_validator
+@register_validator
+def tag_out(field, schema):
+    return get_converter("free_tags_only")
 
 
 @scheming_validator
@@ -86,7 +128,7 @@ def scheming_required(field, schema):
     """
     not_empty if field['required'] else ignore_missing
     """
-    if field.get('required'):
+    if field.get("required"):
         return not_empty
     return ignore_missing
 
@@ -107,8 +149,8 @@ def scheming_multiple_choice(field, schema):
        "choice-a"
     """
     static_choice_values = None
-    if 'choices' in field:
-        static_choice_order = [c['value'] for c in field['choices']]
+    if "choices" in field:
+        static_choice_order = [c["value"] for c in field["choices"]]
         static_choice_values = set(static_choice_order)
 
     def validator(key, data, errors, context):
@@ -122,7 +164,7 @@ def scheming_multiple_choice(field, schema):
             if isinstance(value, six.string_types):
                 value = [value]
             elif not isinstance(value, list):
-                errors[key].append(_('expecting list of strings'))
+                errors[key].append(_("expecting list of strings"))
                 return
         else:
             value = []
@@ -130,8 +172,7 @@ def scheming_multiple_choice(field, schema):
         choice_values = static_choice_values
         if not choice_values:
             choice_order = [
-                choice['value']
-                for choice in sh.scheming_field_choices(field)
+                choice["value"] for choice in sh.scheming_field_choices(field)
             ]
             choice_values = set(choice_order)
 
@@ -143,26 +184,32 @@ def scheming_multiple_choice(field, schema):
             errors[key].append(_('unexpected choice "%s"') % element)
 
         if not errors[key]:
-            data[key] = json.dumps([
-                v for v in
-                (static_choice_order if static_choice_values else choice_order)
-                if v in selected
-            ])
+            data[key] = json.dumps(
+                [
+                    v
+                    for v in (
+                        static_choice_order
+                        if static_choice_values
+                        else choice_order
+                    )
+                    if v in selected
+                ]
+            )
 
-            if field.get('required') and not selected:
-                errors[key].append(_('Select at least one'))
+            if field.get("required") and not selected:
+                errors[key].append(_("Select at least one"))
 
     return validator
 
 
 def validate_date_inputs(field, key, data, extras, errors, context):
-    date_error = _('Date format incorrect')
-    time_error = _('Time format incorrect')
+    date_error = _("Date format incorrect")
+    time_error = _("Time format incorrect")
 
     date = None
 
     def get_input(suffix):
-        inpt = key[0] + '_' + suffix
+        inpt = key[0] + "_" + suffix
         new_key = (inpt,) + tuple(x for x in key if x != key[0])
         key_value = extras.get(inpt)
         data[new_key] = key_value
@@ -171,13 +218,13 @@ def validate_date_inputs(field, key, data, extras, errors, context):
         if key_value:
             del extras[inpt]
 
-        if field.get('required'):
+        if field.get("required"):
             not_empty(new_key, data, errors, context)
 
         return new_key, key_value
 
-    date_key, value = get_input('date')
-    value_full = ''
+    date_key, value = get_input("date")
+    value_full = ""
 
     if value:
         try:
@@ -186,22 +233,23 @@ def validate_date_inputs(field, key, data, extras, errors, context):
         except (TypeError, ValueError) as e:
             errors[date_key].append(date_error)
 
-    time_key, value = get_input('time')
+    time_key, value = get_input("time")
     if value:
         if not value_full:
             errors[date_key].append(
-                _('Date is required when a time is provided'))
+                _("Date is required when a time is provided")
+            )
         else:
             try:
-                value_full += ' ' + value
+                value_full += " " + value
                 date = h.date_str_to_datetime(value_full)
             except (TypeError, ValueError) as e:
                 errors[time_key].append(time_error)
 
-    tz_key, value = get_input('tz')
+    tz_key, value = get_input("tz")
     if value:
         if value not in pytz.all_timezones:
-            errors[tz_key].append('Invalid timezone')
+            errors[tz_key].append("Invalid timezone")
         else:
             if isinstance(date, datetime.datetime):
                 date = pytz.timezone(value).localize(date)
@@ -223,16 +271,19 @@ def scheming_isodatetime(field, schema):
                 try:
                     date = h.date_str_to_datetime(value)
                 except (TypeError, ValueError) as e:
-                    raise Invalid(_('Date format incorrect'))
+                    raise Invalid(_("Date format incorrect"))
         else:
-            extras = data.get(('__extras',))
-            if not extras or (key[0] + '_date' not in extras and
-                              key[0] + '_time' not in extras):
-                if field.get('required'):
+            extras = data.get(("__extras",))
+            if not extras or (
+                key[0] + "_date" not in extras
+                and key[0] + "_time" not in extras
+            ):
+                if field.get("required"):
                     not_empty(key, data, errors, context)
             else:
                 date = validate_date_inputs(
-                    field, key, data, extras, errors, context)
+                    field, key, data, extras, errors, context
+                )
 
         data[key] = date
 
@@ -253,16 +304,19 @@ def scheming_isodatetime_tz(field, schema):
                 try:
                     date = sh.date_tz_str_to_datetime(value)
                 except (TypeError, ValueError) as e:
-                    raise Invalid(_('Date format incorrect'))
+                    raise Invalid(_("Date format incorrect"))
         else:
-            extras = data.get(('__extras',))
-            if not extras or (key[0] + '_date' not in extras and
-                              key[0] + '_time' not in extras):
-                if field.get('required'):
+            extras = data.get(("__extras",))
+            if not extras or (
+                key[0] + "_date" not in extras
+                and key[0] + "_time" not in extras
+            ):
+                if field.get("required"):
                     not_empty(key, data, errors, context)
             else:
                 date = validate_date_inputs(
-                    field, key, data, extras, errors, context)
+                    field, key, data, extras, errors, context
+                )
                 if isinstance(date, datetime.datetime):
                     date = sh.scheming_datetime_to_utc(date)
 
@@ -288,21 +342,21 @@ def scheming_valid_json_object(value, context):
 
             if not isinstance(loaded, dict):
                 raise Invalid(
-                    _('Unsupported value for JSON field: {}').format(value)
+                    _("Unsupported value for JSON field: {}").format(value)
                 )
 
             return value
         except (ValueError, TypeError) as e:
-            raise Invalid(_('Invalid JSON string: {}').format(e))
+            raise Invalid(_("Invalid JSON string: {}").format(e))
 
     elif isinstance(value, dict):
         try:
             return json.dumps(value)
         except (ValueError, TypeError) as e:
-            raise Invalid(_('Invalid JSON object: {}').format(e))
+            raise Invalid(_("Invalid JSON object: {}").format(e))
     else:
         raise Invalid(
-            _('Unsupported type for JSON field: {}').format(type(value))
+            _("Unsupported type for JSON field: {}").format(type(value))
         )
 
 
@@ -339,8 +393,8 @@ def validators_from_string(s, field, schema):
     out = []
     parts = s.split()
     for p in parts:
-        if '(' in p and p[-1] == ')':
-            name, args = p.split('(', 1)
+        if "(" in p and p[-1] == ")":
+            name, args = p.split("(", 1)
             args = args[:-1]  # trim trailing ')'
             try:
                 parsed_args = ast.literal_eval(args)
@@ -350,12 +404,12 @@ def validators_from_string(s, field, schema):
                     parsed_args = (parsed_args,)
 
             except (ValueError, TypeError, SyntaxError, MemoryError):
-                parsed_args = args.split(',')
+                parsed_args = args.split(",")
 
             v = get_validator_or_converter(name)(*parsed_args)
         else:
             v = get_validator_or_converter(p)
-        if getattr(v, 'is_a_scheming_validator', False):
+        if getattr(v, "is_a_scheming_validator", False):
             v = v(field, schema)
         out.append(v)
     return out
@@ -365,14 +419,14 @@ def get_validator_or_converter(name):
     """
     Get a validator or converter by name
     """
-    if name == 'unicode':
+    if name == "unicode":
         return six.text_type
     try:
         v = get_validator(name)
         return v
     except UnknownValidator:
         pass
-    raise SchemingException('validator/converter not found: %r' % name)
+    raise SchemingException("validator/converter not found: %r" % name)
 
 
 def convert_from_extras_group(key, data, errors, context):
@@ -381,17 +435,18 @@ def convert_from_extras_group(key, data, errors, context):
     def remove_from_extras(data, key):
         to_remove = []
         for data_key, data_value in data.items():
-            if (data_key[0] == 'extras'
-                    and data_key[1] == key):
+            if data_key[0] == "extras" and data_key[1] == key:
                 to_remove.append(data_key)
         for item in to_remove:
             del data[item]
 
     for data_key, data_value in data.items():
-        if (data_key[0] == 'extras'
-            and 'key' in data_value
-                and data_value['key'] == key[-1]):
-            data[key] = data_value['value']
+        if (
+            data_key[0] == "extras"
+            and "key" in data_value
+            and data_value["key"] == key[-1]
+        ):
+            data[key] = data_value["value"]
             break
     else:
         return
@@ -433,6 +488,7 @@ def scheming_multiple_text(field, schema):
 
        "Person One"
     """
+
     def _scheming_multiple_text(key, data, errors, context):
         # just in case there was an error before our validator,
         # bail out here because our errors won't be useful
@@ -445,7 +501,7 @@ def scheming_multiple_text(field, schema):
             if isinstance(value, six.string_types):
                 value = [value]
             if not isinstance(value, list):
-                errors[key].append(_('expecting list of strings'))
+                errors[key].append(_("expecting list of strings"))
                 raise StopOnError
 
             out = []
@@ -454,15 +510,17 @@ def scheming_multiple_text(field, schema):
                     continue
 
                 if not isinstance(element, six.string_types):
-                    errors[key].append(_('invalid type for repeating text: %r')
-                                       % element)
+                    errors[key].append(
+                        _("invalid type for repeating text: %r") % element
+                    )
                     continue
                 if isinstance(element, six.binary_type):
                     try:
-                        element = element.decode('utf-8')
+                        element = element.decode("utf-8")
                     except UnicodeDecodeError:
-                        errors[key]. append(_('invalid encoding for "%s" value')
-                                            % element)
+                        errors[key].append(
+                            _('invalid encoding for "%s" value') % element
+                        )
                         continue
 
                 out.append(element)
@@ -472,8 +530,10 @@ def scheming_multiple_text(field, schema):
 
             data[key] = json.dumps(out)
 
-        if (data[key] is missing or data[key] == '[]') and field.get('required'):
-            errors[key].append(_('Missing value'))
+        if (data[key] is missing or data[key] == "[]") and field.get(
+            "required"
+        ):
+            errors[key].append(_("Missing value"))
             raise StopOnError
 
     return _scheming_multiple_text
