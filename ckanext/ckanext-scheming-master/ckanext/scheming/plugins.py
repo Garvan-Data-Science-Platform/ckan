@@ -541,6 +541,7 @@ class SchemingNerfIndexPlugin(p.SingletonPlugin):
                 data_dict[d["field_name"]] = json.dumps(
                     data_dict[d["field_name"]]
                 )
+        print("DATA DICT", data_dict)
         for tag in tags:
             data_dict[tag["vocabulary"]] = json.loads(
                 data_dict.get(tag["vocabulary"], "[]")
