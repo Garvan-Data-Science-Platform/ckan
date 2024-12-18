@@ -18,6 +18,10 @@ resource "kubernetes_deployment" "solr" {
       }
       spec {
 
+        image_pull_secrets {
+          name="regcred"
+        }
+
         init_container {
           name="volume-permissions"
           image="busybox"
@@ -45,7 +49,7 @@ resource "kubernetes_deployment" "solr" {
         volume {
             name = "solr-volume-mount"
             persistent_volume_claim {
-                claim_name = "solr-claim"
+                claim_name = "solr-claim-2"
             }
         }
       }
@@ -54,11 +58,9 @@ resource "kubernetes_deployment" "solr" {
   }
 }
 
-
-
 resource "kubernetes_persistent_volume_claim" "solr" {
   metadata {
-    name = "solr-claim"
+    name = "solr-claim-2"
     labels = {
         App = "solr-${var.env}"
     }

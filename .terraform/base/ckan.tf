@@ -33,7 +33,7 @@ resource "kubernetes_deployment" "ckan" {
         }
 
         container {
-          image = "australia-southeast1-docker.pkg.dev/dsp-registry-410602/docker/ckan:latest"
+          image = "australia-southeast1-docker.pkg.dev/dsp-registry-410602/docker/ckan"
           image_pull_policy = "Always"
           name  = "ckan"
           port {
