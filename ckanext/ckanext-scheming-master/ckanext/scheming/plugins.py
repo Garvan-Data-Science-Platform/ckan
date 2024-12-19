@@ -547,13 +547,14 @@ class SchemingNerfIndexPlugin(p.SingletonPlugin):
                 )
 
         for tag in tags:
-            data = data_dict.get(tag["vocabulary"], "[]").replace('""', '"')
+            data = data_dict.get(tag["vocabulary"], "[]")
             if data[0] == "{":
                 data = (
                     data.replace("{", '["')
                     .replace("}", '"]')
                     .replace(",", '","')
                 )
+            data = data.replace('""', '"')
             log.info("DATADICT")
             log.info(data)
             try:
