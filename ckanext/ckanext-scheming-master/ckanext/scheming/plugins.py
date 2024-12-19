@@ -547,7 +547,7 @@ class SchemingNerfIndexPlugin(p.SingletonPlugin):
                 )
 
         for tag in tags:
-            data = data_dict.get(tag["vocabulary"], "[]")
+            data = data_dict.get(tag["vocabulary"], "[]").replace('""', '"')
             if data[0] == "{":
                 data = (
                     data.replace("{", '["')
@@ -558,7 +558,7 @@ class SchemingNerfIndexPlugin(p.SingletonPlugin):
             log.info(data)
             try:
                 data_dict[tag["vocabulary"]] = json.loads(data)
-            except e:
+            except Exception as e:
                 log.info(e)
 
         return data_dict
