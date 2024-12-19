@@ -554,6 +554,8 @@ class SchemingNerfIndexPlugin(p.SingletonPlugin):
                     .replace("}", '"]')
                     .replace(",", '","')
                 )
+            log.info("DATADICT")
+            log.info(data)
             data_dict[tag["vocabulary"]] = json.loads(data)
 
         return data_dict
