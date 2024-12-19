@@ -56,12 +56,6 @@ dataset_fields:
     label: Organization
     preset: dataset_organization
 
-  - field_name: url
-    label: Source
-    form_placeholder: http://example.com/dataset.json
-    display_property: foaf:homepage
-    display_snippet: link.html
-
   - field_name: version
     label: Version
     validators: ignore_missing unicode_safe package_version_validator
