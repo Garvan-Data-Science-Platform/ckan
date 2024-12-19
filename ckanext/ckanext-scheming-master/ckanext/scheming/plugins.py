@@ -228,6 +228,11 @@ class SchemingDatasetsPlugin(
         # Return the updated facet dict.
         return facets_dict
 
+    def organization_facets(
+        self, facets_dict, organization_type, package_type
+    ):
+        return facets_dict
+
     def show_package_schema(self):
         schema = super(SchemingDatasetsPlugin, self).show_package_schema()
         schema["tags"]["__extras"].append(get_converter("free_tags_only"))
@@ -529,7 +534,6 @@ class SchemingNerfIndexPlugin(p.SingletonPlugin):
         return self.before_index(data_dict)
 
     def before_index(self, data_dict):
-        log.info("BEFORE INDEX")
         schemas = SchemingDatasetsPlugin.instance._expanded_schemas
         if data_dict["type"] not in schemas:
             return data_dict
@@ -541,14 +545,16 @@ class SchemingNerfIndexPlugin(p.SingletonPlugin):
                 data_dict[d["field_name"]] = json.dumps(
                     data_dict[d["field_name"]]
                 )
-        print("DATA DICT", data_dict)
+
         for tag in tags:
-            data_dict[tag["vocabulary"]] = json.loads(
-                data_dict.get(tag["vocabulary"], "[]")
-                .replace("{", '["')
-                .replace("}", '"]')
-                .replace(",", '","')
-            )
+            data = data_dict.get(tag["vocabulary"], "[]")
+            if data[0] == "{":
+                data = (
+                    data.replace("{", '["')
+                    .replace("}", '"]')
+                    .replace(",", '","')
+                )
+            data_dict[tag["vocabulary"]] = json.loads(data)
 
         return data_dict
 
