@@ -30,6 +30,7 @@ dataset_fields:
     choices_helper: assay_type
     validators: assay_type ignore_missing
     output_validators: assay_type_out
+    help_text: Hold (⌘ / ctrl) + Click to select multiple
 
   - field_name: source
     label: Source
