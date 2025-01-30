@@ -57,11 +57,6 @@ dataset_fields:
     label: Organization
     preset: dataset_organization
 
-  - field_name: version
-    label: Version
-    validators: ignore_missing unicode_safe package_version_validator
-    form_placeholder: "1.0"
-
   - field_name: author
     label: Data Owner
     form_placeholder: Joe Bloggs

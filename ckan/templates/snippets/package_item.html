@@ -19,14 +19,6 @@ Example:
       <div class="dataset-content">
         {% block heading %}
           <h2 class="dataset-heading">
-            {% block heading_private %}
-              {% if package.private %}
-                <span class="dataset-private badge bg-secondary">
-                    <i class="fa fa-lock"></i>
-                    {{ _('Private') }}
-                </span>
-              {% endif %}
-            {% endblock %}
             {% block heading_title %}
     <a href="{{ h.url_for('%s.read' % package.type, id=package.name) }}" title="{{ title }}">
       {{title|truncate(80)}}
