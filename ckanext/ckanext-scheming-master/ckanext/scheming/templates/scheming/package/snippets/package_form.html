@@ -26,13 +26,13 @@
       {%- if form_style != 'edit' -%}
         <li class="last {{ s2 }}" style="width:{{ 100 / (pages | length + 1) }}%">
           {% if s2 != 'complete' %}
-            <span class="highlight">{{ _('Add data') }}</span>
+            <span class="highlight">{{ _('Add files/directories') }}</span>
           {% else %}
             {% if s1 == 'active' %}
               {# stage 1 #}
-              <button class="highlight" name="save" value="go-resources" type="submit">{{ _('Add data') }}</button>
+              <button class="highlight" name="save" value="go-resources" type="submit">{{ _('Add files/directories') }}</button>
             {% else %}
-              {% link_for _('Add data'), named_route='dataset.new', class_="highlight" %}
+              {% link_for _('Add files/directories'), named_route='dataset.new', class_="highlight" %}
             {% endif %}
           {% endif %}
         </li>

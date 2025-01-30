@@ -62,8 +62,9 @@
   {% set organizations_available = h.organizations_available('create_dataset') %}
   {% set user_can_update_owner_org = h.can_update_owner_org(data, organizations_available) %}
   {% set user_is_sysadmin = h.check_access('sysadmin') %}
+  {% set user_is_admin = h.check_access('admin') %}
   {% set show_organizations_selector = organizations_available and user_can_update_owner_org %}
-  {% set show_visibility_selector = dataset_has_organization or (organizations_available and (user_is_sysadmin or dataset_is_draft)) %}
+  {% set show_visibility_selector = (user_is_admin and dataset_has_organization) or (organizations_available and (user_is_sysadmin or dataset_is_draft)) %}
 
   {% if show_organizations_selector and show_visibility_selector %}
     <div data-module="dataset-visibility">
@@ -91,7 +92,7 @@
     {% if show_visibility_selector %}
     {% block package_metadata_fields_visibility %}
     <div class="form-group control-medium">
-      <label for="field-private" class="form-label">{{ _('Garvan-wide Visibility') }}</label>
+      <label for="field-private" class="form-label">{{ _('Garvan-wide VisibilityX') }}</label>
       <div class="controls">
         <select id="field-private" name="private" class="form-control">
           {% for option in [('False', _('Metadata + Links to Files/Folders')),('True', _('Basic Metadata Only'))] %}

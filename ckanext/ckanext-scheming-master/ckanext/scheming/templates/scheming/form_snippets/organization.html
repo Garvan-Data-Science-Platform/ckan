@@ -21,11 +21,13 @@
     organization_option_tag=organization_option_tag %}
 
     {% block package_metadata_fields_visibility %}
+    {% set user_is_curator = h.check_access('sysadmin') %}
+    
     <div class="form-group control-medium">
       <label for="field-private" class="form-label">{{ _('Garvan-wide Visibility') }}</label>
       <div class="controls">
-        <select id="field-private" name="private" class="form-control">
-          {% for option in [('False', _('Metadata + Links to Files/Folders')),('True', _('Basic Metadata Only'))] %}
+        <select id="field-private" name="private" class="form-control" {% if not user_is_curator %}readonly style="pointer-events: none;"{% endif %}>
+          {% for option in [('True', _('Basic Metadata Only')),('False', _('Metadata + Links to Files/Folders'))] %}
           <option value="{{ option[0] }}" {% if option[0] == data.private|trim %}selected="selected"{% endif %}>{{ option[1] }}</option>
           {% endfor %}
         </select>
@@ -35,6 +37,7 @@
         Only logged in Garvan users can view your dataset.
       </span>
     </div>
+    
     {% endblock %}
 
   </div>
