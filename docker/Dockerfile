@@ -10,8 +10,8 @@ COPY plugins.txt .
 RUN pip install -r https://raw.githubusercontent.com/ckan/ckanext-xloader/master/requirements.txt && pip install -U requests[security] \
     && pip install gunicorn && pip install -r requirements.txt && pip install -r plugins.txt
 
-RUN pip install -e 'git+https://github.com/ckan/ckanext-pages.git#egg=ckanext-pages'
-#RUN pip install -e "git+https://github.com/ckan/ckanext-scheming.git#egg=ckanext-scheming"
+COPY ckanext/ckanext-pages-master /app/ckanext/ckanext-pages-master
+RUN pip install -e /app/ckanext/ckanext-pages-master
 COPY ckanext/ckanext-scheming-master /app/ckanext/ckanext-scheming-master
 RUN pip install -e /app/ckanext/ckanext-scheming-master
 COPY noanonaccess /app/noanonaccess

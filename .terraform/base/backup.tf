@@ -40,6 +40,16 @@ resource "helm_release" "velero" {
   }
 
   set {
+    name = "nameOverride"
+    value = "velero"
+  }
+
+  set {
+    name = "fullnameOverride"
+    value = "velero"
+  }
+
+  set {
     name = "configuration.backupStorageLocation[0].bucket"
     value = "dhub-backup-${var.env}"
   }
