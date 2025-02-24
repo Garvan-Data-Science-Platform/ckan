@@ -2,5 +2,5 @@
 
 ./docker/parse-config.sh docker/ckan.ini.template > /app/ckan.ini && \
     ckan -c /app/ckan.ini db init && \ 
-    ckan -c /app/ckan.ini db upgrade -p pages && \
+    ckan -c /app/ckan.ini db upgrade && \
     gunicorn --bind 0.0.0.0:8000 --workers=2 --threads=2 wsgi:application
