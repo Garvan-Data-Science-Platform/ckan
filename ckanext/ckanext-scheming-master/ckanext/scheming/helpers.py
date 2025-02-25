@@ -35,15 +35,23 @@ def lang():
 
 
 def create_vocab(vocab_name, vocab_tags):
-    log.info("CREATE VOCAB")
-    log.info(vocab_name)
     user = get_action("get_site_user")({"ignore_auth": True}, {})
     context = {"user": user["name"]}
     try:
         data = {"id": vocab_name}
-        get_action("vocabulary_show")(context, data)
+        vocab = get_action("vocabulary_show")(context, data)
+        data = {"vocabulary_id": vocab_name}
+        vtags = get_action("tag_list")(context, data)
+
+        for tag in set(vocab_tags).difference(set(vtags)):
+            data = {"name": tag, "vocabulary_id": vocab["id"]}
+            get_action("tag_create")(context, data)
+
+        for tag in set(vtags).difference(set(vocab_tags)):
+            data = {"id": tag, "vocabulary_id": vocab["id"]}
+            get_action("tag_delete")(context, data)
+
     except ObjectNotFound:
-        log.info("NOT FOUND")
         data = {"name": vocab_name}
         vocab = get_action("vocabulary_create")(context, data)
         for tag in vocab_tags:

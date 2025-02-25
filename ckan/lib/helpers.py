@@ -1167,8 +1167,7 @@ def get_facet_items_dict(
     exclude_active -- only return unselected facets.
 
     """
-    log.info("SEARCH_FACETS")
-    log.info(search_facets)
+
     if (
         not search_facets
         or not isinstance(search_facets, dict)

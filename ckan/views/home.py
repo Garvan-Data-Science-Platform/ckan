@@ -116,9 +116,6 @@ def index() -> str:
             "license": _("Licenses"),
         }
 
-        log.info("FACETS_HOME")
-        log.info(query)
-
         extra_vars["search_facets"] = query["search_facets"]
 
     except search.SearchError:
