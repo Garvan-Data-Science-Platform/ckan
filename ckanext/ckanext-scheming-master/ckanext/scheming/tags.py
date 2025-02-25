@@ -14,6 +14,7 @@ tags = [
             "scRNA-Seq",
             "FLIM",
             "FACS",
+            "CRISPR",
         ],
     },
     {
@@ -21,7 +22,6 @@ tags = [
         "label": "Source",
         "tags": [
             "Human",
-            "Cell line",
             "Mouse",
             "Rat",
             "Worm",
@@ -68,7 +68,8 @@ tags = [
             "FFPE",
             "Fresh Frozen",
             "Time course",
-            "CRISPR",
+            "Cell line - Immortal",
+            "Cell line - Primary",
         ],
     },
 ]

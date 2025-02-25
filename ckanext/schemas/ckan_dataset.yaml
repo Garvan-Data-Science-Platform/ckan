@@ -33,7 +33,7 @@ dataset_fields:
     help_text: Hold (⌘ / ctrl) + Click to select multiple
 
   - field_name: source
-    label: Source
+    label: Organism
     preset: multiple_select
     choices_helper: source
     validators: source ignore_missing
@@ -52,6 +52,9 @@ dataset_fields:
     choices_helper: factor
     validators: factor ignore_missing
     output_validators: factor_out
+
+  - field_name: disease
+    label: Disease
 
   - field_name: owner_org
     label: Organization
@@ -85,10 +88,13 @@ dataset_fields:
     label: Cost Centre
 
   - field_name: ethics
-    label: Ethics
+    label: Garvan Ethics Reference
 
-  - field_name: disease
-    label: Disease
+  - field_name: hrec
+    label: HREC Reference
+
+  - field_name: nci
+    label: NCI Project Code
 
 resource_fields:
   - field_name: url
