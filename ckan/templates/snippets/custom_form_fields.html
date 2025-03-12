@@ -11,6 +11,10 @@ Example:
 #}
 {% import "macros/form.html" as form %}
 
+<p>
+  Use custom fields for any metadata not included above: <br/>
+  e.g. "NCI project code2: xd45" or "Start of Study Date: 2024-01-01"
+</p>
 <div data-module="custom-fields">
   {% for extra in extras %}
     {% set prefix = 'extras__%d__' % loop.index0 %}

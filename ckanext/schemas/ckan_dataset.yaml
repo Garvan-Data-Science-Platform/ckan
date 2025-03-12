@@ -7,6 +7,7 @@ dataset_fields:
   - field_name: title
     label: Title
     preset: title
+    required: true
     form_placeholder: eg. A descriptive title
 
   - field_name: name
@@ -18,83 +19,98 @@ dataset_fields:
     label: Description
     form_snippet: markdown.html
     form_placeholder: eg. Some useful notes about the data
-
-  - field_name: tag_string
-    label: Tags
-    preset: tag_string_autocomplete
-    form_placeholder: eg. economy, mental health, government
+    required: true
+    helper_text: e.g. provide a high-level overview of the dataset or project. You can include project aims, goals, methods, assays and outcomes. For examples visit the DSP User Guides for more information.
 
   - field_name: assay_type
-    label: Assay Type
-    preset: multiple_select
+    label: Assay/Technology
+    preset: multiple_checkbox
     choices_helper: assay_type
     validators: assay_type ignore_missing
     output_validators: assay_type_out
-    help_text: Hold (⌘ / ctrl) + Click to select multiple
 
   - field_name: source
     label: Organism
-    preset: multiple_select
+    preset: multiple_checkbox
     choices_helper: source
     validators: source ignore_missing
     output_validators: source_out
 
   - field_name: tissue
-    label: Tissue
-    preset: multiple_select
+    label: Biological Sample Source
+    preset: multiple_checkbox
     choices_helper: tissue
     validators: tissue ignore_missing
     output_validators: tissue_out
 
   - field_name: factor
     label: Factor of Interest
-    preset: multiple_select
+    preset: multiple_checkbox
     choices_helper: factor
     validators: factor ignore_missing
     output_validators: factor_out
+    helper_text: These are factors tested or captured by your project. Vist the DSP User Guides for more information.
 
   - field_name: disease
     label: Disease
 
   - field_name: owner_org
-    label: Organization
+    label: Organisation
     preset: dataset_organization
+    helper_text: If you do not see the correct organisation reach out to DSPHelp@garvan.org.au
 
   - field_name: author
     label: Data Owner
     form_placeholder: Joe Bloggs
     display_property: dc:creator
+    helper_text: Person responsible for final decisions about the dataset (e.g. PI, Faculty)
 
   - field_name: author_email
     label: Data Owner Email
     form_placeholder: joe@example.com
     display_property: dc:creator
-    display_snippet: email.html
-    display_email_name_field: author
 
   - field_name: maintainer
     label: Alternative Contact
     form_placeholder: Joe Bloggs
     display_property: dc:contributor
+    helper_text: Data manager or best point of contact regarding maintenance and access to data. If multiple individuals, please add additional "Custom Field"
 
   - field_name: maintainer_email
     label: Alternative Contact Email
     form_placeholder: joe@garvan.org.au
     display_property: dc:contributor
-    display_snippet: email.html
-    display_email_name_field: maintainer
 
   - field_name: cost_centre
     label: Cost Centre
 
   - field_name: ethics
     label: Garvan Ethics Reference
+    form_placeholder: e.g. GRHP XXXX
 
   - field_name: hrec
     label: HREC Reference
 
   - field_name: nci
     label: NCI Project Code
+    helper_text: If there are multiple NCI projects housing the data, please add additional "Custom Field"
+
+  - field_name: publication_status
+    label: Publication Status
+    preset: select
+    choices:
+      - value: published
+        label: Published
+      - value: unpublished
+        label: Unpublished
+      - value: archived
+        label: Archived
+    helper_text: If published, attach a link to publication on next page.
+
+  - field_name: tag_string
+    label: Additional Tags
+    preset: tag_string_autocomplete
+    form_placeholder: eg. economy, mental health, government
 
 resource_fields:
   - field_name: url
@@ -102,14 +118,12 @@ resource_fields:
     preset: resource_url_upload
 
   - field_name: name
+    required: true
     label: Name
     form_placeholder: eg. Google Drive Project Folder
+    helper_text: De-identified, high-level patient information, NCI File Path, publications
 
   - field_name: description
     label: Description
     form_snippet: markdown.html
-    form_placeholder: Some useful notes about the data
-
-  - field_name: format
-    label: Format
-    preset: resource_format_autocomplete
+    form_placeholder: Very short description to help identify file, link or directory
