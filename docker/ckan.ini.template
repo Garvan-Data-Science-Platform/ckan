@@ -245,7 +245,7 @@ ckan.user_reset_landing_page = home.index
 
 ## Activity Streams Settings ###################################################
 ckan.activity_streams_enabled = true
-ckan.activity_streams_email_notifications = false
+ckan.activity_streams_email_notifications = true
 ckan.activity_list_limit = 31
 ckan.activity_list_limit_max = 100
 ckan.email_notifications_since = 2 days
