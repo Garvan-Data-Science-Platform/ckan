@@ -26,7 +26,6 @@ from ckan.lib.dictization import table_dictize
 
 from ckan.types import Context, Query  # noqa
 
-
 __all__ = ["Activity", "ActivityDetail"]
 
 TActivityDetail = TypeVar("TActivityDetail", bound="ActivityDetail")
@@ -395,7 +394,7 @@ def _group_activity_query(group_id: str) -> QActivity:
             model.Package,
             and_(
                 model.Package.id == model.Member.table_id,
-                model.Package.private == False,  # noqa
+                True,  # model.Package.private == False,  # noqa
             ),
         )
         .filter(
@@ -446,7 +445,7 @@ def _organization_activity_query(org_id: str) -> QActivity:
             model.Package,
             and_(
                 model.Package.id == Activity.object_id,
-                True#model.Package.private == False,  # noqa
+                True,  # model.Package.private == False,  # noqa
             ),
         )
         .filter(
@@ -471,9 +470,8 @@ def group_activity_list(
     after: Optional[datetime.datetime] = None,
     before: Optional[datetime.datetime] = None,
     include_hidden_activity: bool = False,
-    activity_types: Optional[list[str]] = None
+    activity_types: Optional[list[str]] = None,
 ) -> list[Activity]:
-
     """Return the given group's public activity stream.
 
     Returns activities where the given group or one of its datasets is the
@@ -528,7 +526,7 @@ def organization_activity_list(
     after: Optional[datetime.datetime] = None,
     before: Optional[datetime.datetime] = None,
     include_hidden_activity: bool = False,
-    activity_types: Optional[list[str]] = None
+    activity_types: Optional[list[str]] = None,
 ) -> list[Activity]:
     """Return the given org's public activity stream.
 
