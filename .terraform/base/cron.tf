@@ -26,7 +26,7 @@ resource "kubernetes_cron_job_v1" "mailer" {
               image_pull_policy = "Always"
               name  = "ckan-mailer"
 
-              command = ["/bin/bash", "-c", "./docker/parse-config.sh docker/ckan.ini.template > /app/ckan.ini && ckan -c ckan.ini notify send_emails"]
+              command = ["/bin/bash", "-c", "./docker/parse-config.sh docker/ckan.ini.template > /app/ckan.ini && ckan -c ckan.ini notify send_emails && ckan -c ckan.ini tracking update && ckan -c ckan.ini search-index rebuild -r"]
 
               env {
                 name = "SITE_URL"

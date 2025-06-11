@@ -44,6 +44,7 @@ use = egg:ckan
 SECRET_KEY = {{SECRET_KEY}}
 ckan.legacy_route_mappings = {}
 config.mode = strict
+ckan.tracking_enabled = true
 
 ## Development settings ########################################################
 ckan.devserver.host = localhost
