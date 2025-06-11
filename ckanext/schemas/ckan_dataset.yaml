@@ -44,15 +44,27 @@ dataset_fields:
     output_validators: tissue_out
 
   - field_name: factor
-    label: Factor of Interest
+    label: Other
     preset: multiple_checkbox
     choices_helper: factor
     validators: factor ignore_missing
     output_validators: factor_out
     helper_text: These are factors tested or captured by your project. Vist the DSP User Guides for more information.
 
+  - field_name: cell_line
+    label: Cell Line
+    preset: multiple_checkbox
+    choices_helper: cell_line
+    validators: cell_line ignore_missing
+    output_validators: cell_line_out
+
   - field_name: disease
     label: Disease
+
+  - field_name: tag_string
+    label: Additional Tags
+    preset: tag_string_autocomplete
+    form_placeholder: eg. assays not listed above
 
   - field_name: owner_org
     label: Organisation
@@ -106,11 +118,6 @@ dataset_fields:
       - value: archived
         label: Archived
     helper_text: If published, attach a link to publication on next page.
-
-  - field_name: tag_string
-    label: Additional Tags
-    preset: tag_string_autocomplete
-    form_placeholder: eg. economy, mental health, government
 
 resource_fields:
   - field_name: url

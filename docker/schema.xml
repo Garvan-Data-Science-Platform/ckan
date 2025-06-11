@@ -172,6 +172,7 @@ attribute with the form `ckan-X.Y` -->
     <field name="source" type="string" indexed="true" stored="true" multiValued="true"/>
     <field name="tissue" type="string" indexed="true" stored="true" multiValued="true"/>
     <field name="factor" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="cell_line" type="string" indexed="true" stored="true" multiValued="true"/>
 
     <dynamicField name="*_date" type="date" indexed="true" stored="true" multiValued="false"/>
 

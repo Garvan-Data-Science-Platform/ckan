@@ -59,17 +59,21 @@ tags = [
     },
     {
         "vocabulary": "factor",
-        "label": "Factor of Interest",
+        "label": "Other",
         "tags": [
             "Healthly controls",
             "Biobank",
-            "Sex",
-            "Diet",
             "FFPE",
             "Fresh Frozen",
             "Time course",
-            "Cell line - Immortal",
-            "Cell line - Primary",
+        ],
+    },
+    {
+        "vocabulary": "cell_line",
+        "label": "Cell Line",
+        "tags": [
+            "Immortal",
+            "Primary",
         ],
     },
 ]
