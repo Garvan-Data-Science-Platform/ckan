@@ -22,12 +22,33 @@ dataset_fields:
     required: true
     helper_text: e.g. provide a high-level overview of the dataset or project. You can include project aims, goals, methods, assays and outcomes. For examples visit the DSP User Guides for more information.
 
+  - field_name: target
+    label: Target
+    preset: multiple_checkbox
+    choices_helper: target
+    validators: target ignore_missing
+    output_validators: target_out
+
   - field_name: assay_type
-    label: Assay/Technology
+    label: Sequencing Technology
     preset: multiple_checkbox
     choices_helper: assay_type
     validators: assay_type ignore_missing
     output_validators: assay_type_out
+
+  - field_name: imaging
+    label: Imaging Technology
+    preset: multiple_checkbox
+    choices_helper: imaging
+    validators: imaging ignore_missing
+    output_validators: imaging_out
+
+  - field_name: molecules
+    label: Molecule and Cell Technologies
+    preset: multiple_checkbox
+    choices_helper: molecules
+    validators: molecules ignore_missing
+    output_validators: molecules_out
 
   - field_name: source
     label: Organism
@@ -44,19 +65,11 @@ dataset_fields:
     output_validators: tissue_out
 
   - field_name: factor
-    label: Other
+    label: Experimental Characteristics
     preset: multiple_checkbox
     choices_helper: factor
     validators: factor ignore_missing
     output_validators: factor_out
-    helper_text: These are factors tested or captured by your project. Vist the DSP User Guides for more information.
-
-  - field_name: cell_line
-    label: Cell Line
-    preset: multiple_checkbox
-    choices_helper: cell_line
-    validators: cell_line ignore_missing
-    output_validators: cell_line_out
 
   - field_name: disease
     label: Disease
