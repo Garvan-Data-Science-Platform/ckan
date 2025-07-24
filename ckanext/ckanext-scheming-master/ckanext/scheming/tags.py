@@ -10,7 +10,7 @@ tags = [
         "tags": [
             "Short Read",
             "Long Read",
-            "DNA-Binding / Chromatin",
+            "DNA-Binding or Chromatin Accessibility",
             "Methylation",
             "Spatial",
             "Single Cell",
@@ -20,7 +20,7 @@ tags = [
         "vocabulary": "imaging",
         "label": "Imaging Technology",
         "tags": [
-            "Fixed Cells / Tissues",
+            "Fixed Cells and Tissues",
             "Live Cells",
             "Fluorescence",
             "Multiplexing",
@@ -31,7 +31,7 @@ tags = [
     {
         "vocabulary": "molecules",
         "label": "Molecule and Cell Technology",
-        "tags": ["Flow Sorting / Analysis", "Mass Spec"],
+        "tags": ["Flow Sorting and Analysis", "Mass Spec"],
     },
     {
         "vocabulary": "source",
@@ -74,8 +74,8 @@ tags = [
             "Time course",
             "In Vitro",
             "In Vivo",
-            "Cell Line: Immortal",
-            "Cell Line: Primary",
+            "Cell Line - Immortal",
+            "Cell Line - Primary",
             "DPX",
             "PDX",
         ],
