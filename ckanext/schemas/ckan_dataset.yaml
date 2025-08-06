@@ -85,6 +85,9 @@ dataset_fields:
     validators: target ignore_missing
     output_validators: target_out
 
+  - field_name: help_text_only
+    help_text: "Help text example"
+
   - field_name: assay_type
     label: Sequencing Technology
     preset: multiple_checkbox
