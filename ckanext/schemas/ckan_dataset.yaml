@@ -78,13 +78,12 @@ dataset_fields:
   - start_form_page:
       title: Technical metadata
       description: Select all tags that apply to your dataset
-
-      field_name: target
-      label: Target
-      preset: multiple_checkbox
-      choices_helper: target
-      validators: target ignore_missing
-      output_validators: target_out
+    field_name: target
+    label: Target
+    preset: multiple_checkbox
+    choices_helper: target
+    validators: target ignore_missing
+    output_validators: target_out
 
   - field_name: assay_type
     label: Sequencing Technology
