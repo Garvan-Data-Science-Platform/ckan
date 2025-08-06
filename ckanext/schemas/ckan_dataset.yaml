@@ -85,15 +85,13 @@ dataset_fields:
     validators: target ignore_missing
     output_validators: target_out
 
-  - field_name: help_text_only
-    help_text: "Help text example"
-
   - field_name: assay_type
     label: Sequencing Technology
     preset: multiple_checkbox
     choices_helper: assay_type
     validators: assay_type ignore_missing
     output_validators: assay_type_out
+    helper_text: Select all tags that apply to your dataset, or specify additional tags below
 
   - field_name: imaging
     label: Imaging Technology
@@ -101,6 +99,7 @@ dataset_fields:
     choices_helper: imaging
     validators: imaging ignore_missing
     output_validators: imaging_out
+    helper_text: Select all tags that apply to your dataset, or specify additional tags below
 
   - field_name: molecules
     label: Molecule and Cell Technologies
@@ -108,6 +107,7 @@ dataset_fields:
     choices_helper: molecules
     validators: molecules ignore_missing
     output_validators: molecules_out
+    helper_text: Select all tags that apply to your dataset, or specify additional tags below
 
   - field_name: source
     label: Organism
@@ -115,6 +115,7 @@ dataset_fields:
     choices_helper: source
     validators: source ignore_missing
     output_validators: source_out
+    helper_text: Select all tags that apply to your dataset, or specify additional tags below
 
   - field_name: tissue
     label: Biological Sample Source
@@ -122,6 +123,7 @@ dataset_fields:
     choices_helper: tissue
     validators: tissue ignore_missing
     output_validators: tissue_out
+    helper_text: Select all tags that apply to your dataset, or specify additional tags below
 
   - field_name: factor
     label: Experimental Characteristics
@@ -129,6 +131,7 @@ dataset_fields:
     choices_helper: factor
     validators: factor ignore_missing
     output_validators: factor_out
+    helper_text: Select all tags that apply to your dataset, or specify additional tags below
 
   - field_name: tag_string
     label: Additional Tags
