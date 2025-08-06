@@ -4,7 +4,10 @@ about: A reimplementation of the default CKAN dataset schema
 about_url: http://github.com/ckan/ckanext-scheming
 
 dataset_fields:
-  - field_name: title
+  - start_form_page:
+      title: Basic metadata
+      description: Information about the dataset
+    field_name: title
     label: Title
     preset: title
     required: true
@@ -48,9 +51,6 @@ dataset_fields:
     label: Alternative Contact Email
     form_placeholder: joe@garvan.org.au
     display_property: dc:contributor
-
-  - field_name: cost_centre
-    label: Cost Centre
 
   - field_name: ethics
     label: Garvan Ethics Reference
