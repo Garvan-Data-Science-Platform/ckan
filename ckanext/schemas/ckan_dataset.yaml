@@ -23,18 +23,18 @@ dataset_fields:
     form_snippet: markdown.html
     form_placeholder: eg. Some useful notes about the data
     required: true
-    helper_text: e.g. provide a high-level overview of the dataset or project. You can include project aims, goals, methods, assays and outcomes. For examples visit the DSP User Guides for more information.
+    help_text: e.g. provide a high-level overview of the dataset or project. You can include project aims, goals, methods, assays and outcomes. For examples visit the DSP User Guides for more information.
 
   - field_name: owner_org
     label: Organisation
     preset: dataset_organization
-    helper_text: If you do not see the correct organisation reach out to DSPHelp@garvan.org.au
+    help_text: If you do not see the correct organisation reach out to DSPHelp@garvan.org.au
 
   - field_name: author
     label: Data Owner
     form_placeholder: Joe Bloggs
     display_property: dc:creator
-    helper_text: Person responsible for final decisions about the dataset (e.g. PI, Faculty)
+    help_text: Person responsible for final decisions about the dataset (e.g. PI, Faculty)
 
   - field_name: author_email
     label: Data Owner Email
@@ -45,7 +45,7 @@ dataset_fields:
     label: Alternative Contact
     form_placeholder: Joe Bloggs
     display_property: dc:contributor
-    helper_text: Data manager or best point of contact regarding maintenance and access to data. If multiple individuals, please add additional "Custom Field"
+    help_text: Data manager or best point of contact regarding maintenance and access to data. If multiple individuals, please add additional "Custom Field"
 
   - field_name: maintainer_email
     label: Alternative Contact Email
@@ -61,7 +61,7 @@ dataset_fields:
 
   - field_name: nci
     label: NCI Project Code
-    helper_text: If there are multiple NCI projects housing the data, please add additional "Custom Field"
+    help_text: If there are multiple NCI projects housing the data, please add additional "Custom Field"
 
   - field_name: publication_status
     label: Publication Status
@@ -73,7 +73,7 @@ dataset_fields:
         label: Unpublished
       - value: archived
         label: Archived
-    helper_text: If published, attach a link to publication on next page.
+    help_text: If published, attach a link to publication on next page.
 
   - start_form_page:
       title: Technical metadata
@@ -91,7 +91,7 @@ dataset_fields:
     choices_helper: assay_type
     validators: assay_type ignore_missing
     output_validators: assay_type_out
-    helper_text: Select all tags that apply to your dataset, or specify additional tags below
+    help_text: Select all tags that apply to your dataset, or specify additional tags below
 
   - field_name: imaging
     label: Imaging Technology
@@ -99,7 +99,7 @@ dataset_fields:
     choices_helper: imaging
     validators: imaging ignore_missing
     output_validators: imaging_out
-    helper_text: Select all tags that apply to your dataset, or specify additional tags below
+    help_text: Select all tags that apply to your dataset, or specify additional tags below
 
   - field_name: molecules
     label: Molecule and Cell Technologies
@@ -107,7 +107,7 @@ dataset_fields:
     choices_helper: molecules
     validators: molecules ignore_missing
     output_validators: molecules_out
-    helper_text: Select all tags that apply to your dataset, or specify additional tags below
+    help_text: Select all tags that apply to your dataset, or specify additional tags below
 
   - field_name: source
     label: Organism
@@ -115,7 +115,7 @@ dataset_fields:
     choices_helper: source
     validators: source ignore_missing
     output_validators: source_out
-    helper_text: Select all tags that apply to your dataset, or specify additional tags below
+    help_text: Select all tags that apply to your dataset, or specify additional tags below
 
   - field_name: tissue
     label: Biological Sample Source
@@ -123,7 +123,7 @@ dataset_fields:
     choices_helper: tissue
     validators: tissue ignore_missing
     output_validators: tissue_out
-    helper_text: Select all tags that apply to your dataset, or specify additional tags below
+    help_text: Select all tags that apply to your dataset, or specify additional tags below
 
   - field_name: factor
     label: Experimental Characteristics
@@ -131,7 +131,7 @@ dataset_fields:
     choices_helper: factor
     validators: factor ignore_missing
     output_validators: factor_out
-    helper_text: Select all tags that apply to your dataset, or specify additional tags below
+    help_text: Select all tags that apply to your dataset, or specify additional tags below
 
   - field_name: tag_string
     label: Additional Tags
@@ -150,7 +150,7 @@ resource_fields:
     required: true
     label: Name
     form_placeholder: eg. Google Drive Project Folder
-    helper_text: De-identified, high-level patient information, NCI File Path, publications
+    help_text: De-identified, high-level patient information, NCI File Path, publications
 
   - field_name: description
     label: Description
